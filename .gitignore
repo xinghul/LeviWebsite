@@ -1,0 +1,5 @@
+logs/*
+*.log
+node_modules/
+app/bower_components/
+*.pem

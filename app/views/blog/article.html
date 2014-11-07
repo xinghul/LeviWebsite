@@ -1,0 +1,20 @@
+
+<div class="col-md-12">
+  <div class="article-block">
+    <div class="article-title">
+      <h1>{{article.title}}</h1>
+    </div>
+    <div class="article-info">
+      <div class="col-md-2"><i class="fa fa-fw fa-pencil"></i>{{article.author}}</div>
+      <div class="col-md-2"> <i class="fa fa-fw fa-calendar"></i>{{parseDate(article.date)}}</div>
+      <div class="col-md-2"> <i class="fa fa-fw fa-eye"></i>{{article.views}} views</div>
+      <div class="col-md-6 text-right"><i class="fa fa-fw fa-tags"></i><span ng-repeat="tag in article.tag" ng-style="{'background-color': tagColor[tag]}">{{tag}}</span></div>
+    </div>
+    <div class="article-content">
+      <div ng-bind-html="toTrustedHTML(article.content)"></div>
+    </div>
+    <div class="article-comment">
+      <button ng-click="deleteArticle()" ng-show="currentUser.admin" class="btn btn-default">delete</button>
+    </div>
+  </div>
+</div>

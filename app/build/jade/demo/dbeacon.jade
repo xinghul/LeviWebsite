@@ -1,0 +1,143 @@
+.col-md-2.col-xs-6
+  form
+    fieldset#color-table-node
+      h3
+        small Node Labels
+    .btn-toolbar.text-center
+      button(class='btn btn-success', data-toggle="modal", data-target="#modalAddNode", id="showModalAddNode") Add Node
+  form
+    fieldset#color-table-link
+      h3
+        small Relationship Types
+    .btn-toolbar.text-center
+      button(type="button", id="test", class='btn btn-warning', data-container="body", data-toggle="popover", data-placement="bottom", ng-click="chooseNodes()") Add Relationship
+  
+.col-md-8.col-xs-12
+  .col-md-12
+    #frame
+      //- #overlay(ng-show="addingRls", style="position:absolute;z-index:-1;width:100%;height:800px;opacity:0.6;background-color:#000")
+  .col-md-8
+    .text-success(ng-show='graphInfo')
+      span.glyphicon.glyphicon-ok
+      span &nbsp
+      span {{graphInfo}}
+  .col-md-4
+    .btn-toolbar.text-right
+      button(class="btn btn-info", id="btnDetail")
+        i(class="fa fa-lg fa-eye-slash") Hide Details
+
+.col-md-2.col-xs-6
+  h1(ng-model='nodeLabel')
+    small {{nodeLabel}}
+  div(ng-model='nodeInfo')
+    table.table.table-bordered.table-hover.table-striped
+      tr(ng-repeat='(key, value) in nodeInfo')
+        th {{key}}
+        td {{value}}
+  div(class='btn-toolbar', ng-show='nodeId')
+    button(class='btn btn-info', data-toggle="modal", data-target="#modalEdit", id="showModal") 
+      i(class="fa fa-edit fa-lg") Edit
+    button(ng-click='deleteNode()', class='btn btn-danger') 
+      i(class="fa fa-trash-o fa-lg") Delete
+
+  div(class="modal fade", id="modalEdit", tabindex="-1", role="dialog", aria-labelledby="labelEditNode", aria-hidden="true")
+    .modal-dialog
+      .modal-content
+        .modal-header 
+          button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
+          h4(class="modal-title") Edit node
+        .modal-body
+          form(class="form-horizontal", role="form", id="formEdit")
+            div(class="form-group", ng-repeat='(key, value) in nodeInfo')
+              label(class="col-sm-2 control-label") {{key}}
+              .col-sm-10
+                input(type="text", name="field[]", class="form-control", placeholder="{{value}}", ng-model="editFormData[key]")
+            p.text-right.text-info Unedited fields will remain unchanged.
+        .modal-footer
+          button(class="btn btn-default", data-dismiss="modal") Close
+          button(data-dismiss="modal", class="btn btn-primary", ng-click="editNode()") Save changes
+
+  div(class="modal fade", id="modalAddNode", tabindex="-1", role="dialog", aria-labelledby="labelAddNode", aria-hidden="true")
+    .modal-dialog
+      .modal-content
+        .modal-header 
+          button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
+          h4(class="modal-title") Add node
+        .modal-body
+          form(class="form-horizontal", role="form", id="formAddNode")
+            div(class="form-group")
+              label(for="selectLabel", class="col-md-2 control-label") Label
+              .col-md-10
+                select(class="form-control", id="selectLabel", name="selectLabel", ng-model="selectedLabel", ng-options="label for (label, data) in nodeLabels")
+            div(class="form-group", ng-repeat="field in selectedLabel.fields")
+              label(class="col-md-2 control-label") {{field}}
+              .col-md-10
+                input(type="text", name="field[]", class="form-control", placeholder="", ng-model="dataAddNode[field]")
+        .modal-footer
+          button(class="btn btn-default", data-dismiss="modal") Close
+          button(ng-click='addNode()', data-dismiss="modal", class="btn btn-success") Add
+
+  div(class="modal fade", id="modalAddRls", tabindex="-1", role="dialog", aria-labelledby="labelAddRls", aria-hidden="true")
+    .modal-dialog
+      .modal-content
+        .modal-header 
+          h4(class="modal-title", id="labelAddRls") Add relationship
+        .modal-body
+          form(class="form-horizontal", role="form", id="form_add_rls")
+            div(class="form-group")
+              label(for="rls_select", class="col-sm-2 control-label") Type
+              .col-sm-10
+                select(class="form-control", id="rls_select", ng-model="selectedRls", ng-options="type for type in linkTypes")
+        .modal-footer
+          button(class="btn btn-default", data-dismiss="modal") Close
+          button(ng-click='addRls()', data-dismiss="modal", class="btn btn-success") Add
+
+script.
+  $('#showModal').on('click', function () {
+    $('#formEdit').bootstrapValidator({
+        message: 'This value is not valid',
+        excluded: [':disabled'],
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          'field[]': {
+            validators: {
+              notEmpty: {
+                  message: 'The field is required'
+              }
+            }
+          }
+        }
+    });
+  });
+  $('#modalEdit').on('shown.bs.modal', function() {
+    $('#formEdit').bootstrapValidator('resetForm', true);
+  });
+
+  $('#test').popover({
+    "content": "Choose two nodes to add relationship."
+  });
+  // $('#overlay').on('click', function () {
+  //   console.log("123");
+  // });
+  $('#btnDetail').on('click', function () {
+    var i = $(this).find('i');
+    console.log();
+    if (i.hasClass('fa-eye-slash')) {
+      i.removeClass('fa-eye-slash');
+      i.addClass('fa-eye');
+      $('.textNode').hide(500);
+      $('.textLink').hide(500);
+      i.text("Show Details");
+    }
+    else {
+      i.removeClass('fa-eye');
+      i.addClass('fa-eye-slash');
+      $('.textNode').show(500);
+      $('.textLink').show(500);
+      i.text("Hide Details");
+    }
+  });

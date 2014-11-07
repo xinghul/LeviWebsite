@@ -1,0 +1,26 @@
+
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-4"><i>placeholder: blog description, filter box, etc.</i></div>
+    <div class="col-md-4">
+      <div id="btnPost" style="display:inline-block" ng-attr-original-title="{{ currentUser.admin ? '' : 'Only admin can post articles.' }}" ng-style="{ 'cursor': (currentUser.admin ? 'auto' : 'no-drop') }" data-toggle="tooltip" data-placement="right"><a ng-class="{disabled : !currentUser.admin}" ui-sref="blog.editor" class="btn btn-success"><i class="fa fa-lg fa-fw fa-pencil-square-o"></i>Post</a></div>
+    </div>
+  </div>
+</div>
+<div ng-repeat="article in articles">
+  <div class="col-md-6 col-xs-12">
+    <div class="blog-grid"><a ui-sref="blog.article({index: articles.indexOf(article)})"><img ng-src="/images/blog/{{article.logo}}.jpg" class="blog-grid-logo"/></a>
+      <div class="blog-grid-content">
+        <div class="blog-grid-info">
+          <div class="row">
+            <div class="col-xs-4"><i class="fa fa-fw fa-pencil"></i>{{article.author}}</div>
+            <div class="col-xs-4"><i class="fa fa-fw fa-calendar"></i>{{parseDate(article.date)}}</div>
+            <div class="col-xs-4"><i class="fa fa-fw fa-eye"></i>{{article.views}} views</div>
+            <div class="col-xs-12"><i class="fa fa-fw fa-tags"></i><span ng-repeat="tag in article.tag" ng-style="{'background-color': tagColor[tag]}">{{tag}}</span></div>
+          </div>
+        </div><a ui-sref="blog.article({index: articles.indexOf(article)})">{{article.title}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>$("#btnPost").tooltip();</script>

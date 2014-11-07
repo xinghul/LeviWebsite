@@ -1,0 +1,86 @@
+#auth-modal {
+    background-color: #D5D5D5;
+}
+/* Wrapper */
+.icon-button {
+    background: -webkit-linear-gradient(white, #D5D5D5); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(white, #D5D5D5); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(white, #D5D5D5); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(white, #D5D5D5); /* Standard syntax */
+    cursor: pointer;
+    display: inline-block;
+    font-size: 2rem;
+    line-height: 2rem;
+    margin: 0 5px;
+    position: relative;
+    text-align: center;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 5rem;
+}
+
+/* Circle */
+.icon-button span {
+    border-radius: 0;
+    display: block;
+    height: 0;
+    left: 50%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -webkit-transition: all 0.3s;
+       -moz-transition: all 0.3s;
+         -o-transition: all 0.3s;
+            transition: all 0.3s;
+    width: 0;
+}
+.icon-button:hover span {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 5rem;
+    margin: -5rem;
+}
+.twitter span {
+    background-color: #4099ff;
+}
+.facebook span {
+    background-color: #3B5998;
+}
+.google-plus span {
+    background-color: #db5a3c;
+}
+
+/* Icons */
+.icon-button i {
+    background: none;
+    color: white;
+    left: 0;
+    line-height: 10rem;
+    position: absolute;
+    top: 0;
+    -webkit-transition: all 0.3s;
+       -moz-transition: all 0.3s;
+         -o-transition: all 0.3s;
+            transition: all 0.3s;
+    width: 10rem;
+    height: 10rem;
+    z-index: 10;
+}
+.icon-button .icon-twitter {
+    color: #4099ff;
+}
+.icon-button .icon-facebook {
+    color: #3B5998;
+}
+.icon-button .icon-google-plus {
+    color: #db5a3c;
+}
+.icon-button:hover .icon-twitter,
+.icon-button:hover .icon-facebook,
+.icon-button:hover .icon-google-plus {
+    color: white;
+}

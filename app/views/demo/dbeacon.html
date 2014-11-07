@@ -1,0 +1,176 @@
+
+<div class="col-md-2 col-xs-6">
+  <form>
+    <fieldset id="color-table-node">
+      <h3><small>Node Labels</small></h3>
+    </fieldset>
+    <div class="btn-toolbar text-center">
+      <button data-toggle="modal" data-target="#modalAddNode" id="showModalAddNode" class="btn btn-success">Add Node</button>
+    </div>
+  </form>
+  <form>
+    <fieldset id="color-table-link">
+      <h3><small>Relationship Types</small></h3>
+    </fieldset>
+    <div class="btn-toolbar text-center">
+      <button type="button" id="test" data-container="body" data-toggle="popover" data-placement="bottom" ng-click="chooseNodes()" class="btn btn-warning">Add Relationship</button>
+    </div>
+  </form>
+</div>
+<div class="col-md-8 col-xs-12">
+  <div class="col-md-12">
+    <div id="frame">
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div ng-show="graphInfo" class="text-success"><span class="glyphicon glyphicon-ok"></span><span>&nbsp</span><span>{{graphInfo}}</span></div>
+  </div>
+  <div class="col-md-4">
+    <div class="btn-toolbar text-right">
+      <button id="btnDetail" class="btn btn-info"><i class="fa fa-lg fa-eye-slash">Hide Details</i></button>
+    </div>
+  </div>
+</div>
+<div class="col-md-2 col-xs-6">
+  <h1 ng-model="nodeLabel"><small>{{nodeLabel}}</small></h1>
+  <div ng-model="nodeInfo">
+    <table class="table table-bordered table-hover table-striped">
+      <tr ng-repeat="(key, value) in nodeInfo">
+        <th>{{key}}</th>
+        <td>{{value}}</td>
+      </tr>
+    </table>
+  </div>
+  <div ng-show="nodeId" class="btn-toolbar">
+    <button data-toggle="modal" data-target="#modalEdit" id="showModal" class="btn btn-info"><i class="fa fa-edit fa-lg">Edit</i></button>
+    <button ng-click="deleteNode()" class="btn btn-danger"><i class="fa fa-trash-o fa-lg">Delete</i></button>
+  </div>
+  <div id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="labelEditNode" aria-hidden="true" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+          <h4 class="modal-title">Edit node</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" id="formEdit" class="form-horizontal">
+            <div ng-repeat="(key, value) in nodeInfo" class="form-group">
+              <label class="col-sm-2 control-label">{{key}}</label>
+              <div class="col-sm-10">
+                <input type="text" name="field[]" placeholder="{{value}}" ng-model="editFormData[key]" class="form-control"/>
+              </div>
+            </div>
+            <p class="text-right text-info">Unedited fields will remain unchanged.</p>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button data-dismiss="modal" class="btn btn-default">Close</button>
+          <button data-dismiss="modal" ng-click="editNode()" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalAddNode" tabindex="-1" role="dialog" aria-labelledby="labelAddNode" aria-hidden="true" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+          <h4 class="modal-title">Add node</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" id="formAddNode" class="form-horizontal">
+            <div class="form-group">
+              <label for="selectLabel" class="col-md-2 control-label">Label</label>
+              <div class="col-md-10">
+                <select id="selectLabel" name="selectLabel" ng-model="selectedLabel" ng-options="label for (label, data) in nodeLabels" class="form-control"></select>
+              </div>
+            </div>
+            <div ng-repeat="field in selectedLabel.fields" class="form-group">
+              <label class="col-md-2 control-label">{{field}}</label>
+              <div class="col-md-10">
+                <input type="text" name="field[]" placeholder="" ng-model="dataAddNode[field]" class="form-control"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button data-dismiss="modal" class="btn btn-default">Close</button>
+          <button ng-click="addNode()" data-dismiss="modal" class="btn btn-success">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalAddRls" tabindex="-1" role="dialog" aria-labelledby="labelAddRls" aria-hidden="true" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="labelAddRls" class="modal-title">Add relationship</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" id="form_add_rls" class="form-horizontal">
+            <div class="form-group">
+              <label for="rls_select" class="col-sm-2 control-label">Type</label>
+              <div class="col-sm-10">
+                <select id="rls_select" ng-model="selectedRls" ng-options="type for type in linkTypes" class="form-control"></select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button data-dismiss="modal" class="btn btn-default">Close</button>
+          <button ng-click="addRls()" data-dismiss="modal" class="btn btn-success">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('#showModal').on('click', function () {
+    $('#formEdit').bootstrapValidator({
+        message: 'This value is not valid',
+        excluded: [':disabled'],
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          'field[]': {
+            validators: {
+              notEmpty: {
+                  message: 'The field is required'
+              }
+            }
+          }
+        }
+    });
+  });
+  $('#modalEdit').on('shown.bs.modal', function() {
+    $('#formEdit').bootstrapValidator('resetForm', true);
+  });
+  
+  $('#test').popover({
+    "content": "Choose two nodes to add relationship."
+  });
+  // $('#overlay').on('click', function () {
+  //   console.log("123");
+  // });
+  $('#btnDetail').on('click', function () {
+    var i = $(this).find('i');
+    console.log();
+    if (i.hasClass('fa-eye-slash')) {
+      i.removeClass('fa-eye-slash');
+      i.addClass('fa-eye');
+      $('.textNode').hide(500);
+      $('.textLink').hide(500);
+      i.text("Show Details");
+    }
+    else {
+      i.removeClass('fa-eye');
+      i.addClass('fa-eye-slash');
+      $('.textNode').show(500);
+      $('.textLink').show(500);
+      i.text("Hide Details");
+    }
+  });
+</script>

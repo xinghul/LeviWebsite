@@ -1,0 +1,87 @@
+doctype
+html(ng-app="myApp", ng-controller="AppCtrl")
+    head
+        meta(charset='utf8')
+        base(href='/')
+        title Levi Lu
+        script(src="bower_components/d3/d3.min.js")
+        link(href='http://fonts.googleapis.com/css?family=Open+Sans:400,600', rel='stylesheet', type='text/css')
+        link(href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah', rel='stylesheet', type='text/css')
+        link(href='http://fonts.googleapis.com/css?family=Courgette', rel='stylesheet', type='text/css')
+        link(href='http://fonts.googleapis.com/css?family=Norican', rel='stylesheet', type='text/css')
+        link(href='http://fonts.googleapis.com/css?family=Patrick+Hand', rel='stylesheet', type='text/css')
+        link(rel='stylesheet', href='bower_components/fontawesome/css/font-awesome.min.css')
+        link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.min.css')
+        link(rel="stylesheet", href="bower_components/bootstrapvalidator/dist/css/bootstrapValidator.min.css")
+        link(rel="stylesheet", href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/styles/default.min.css")
+        link(rel='stylesheet', href='stylesheets/style.css')
+        link(rel="stylesheet", href="stylesheets/animate.css")
+        link(rel='stylesheet', href='stylesheets/me-social.css')
+        link(rel="stylesheet", href="stylesheets/auth-social.css")
+    body
+        include ./auth.jade
+        nav(class="navbar navbar-inverse", role="navigation", ng-controller="NavbarCtrl")
+            .container-fluid
+                .navbar-header
+                    button(class="navbar-toggle", data-toggle="collapse", data-target="#myNav")
+                    a(class="navbar-brand", href="/", style="font-family: 'Norican', cursive; font-size: 24px") Levi Lu
+                .collapse.navbar-collapse(id="myNav")
+                    ul.nav.navbar-nav
+                        li(ui-sref-active="active")
+                            a(ui-sref="blog")
+                                i(class="fa fa-lg fa-fw fa-coffee") 
+                                | Blog
+                        li(ui-sref-active="active")
+                            a(ui-sref="demo")
+                                i(class="fa fa-lg fa-fw fa-caret-square-o-right")
+                                | Demo
+                        li(ui-sref-active="active")
+                            a(ui-sref="about") 
+                                i(class="fa fa-lg fa-fw fa-user")
+                                | About
+                    div(class="nav navbar-nav pull-right")
+                        ul(class="nav navbar-nav", ng-hide="currentUser")
+                            li
+                                a(data-toggle="modal", data-target="#modalAuth", ng-click="changeMode('signin')")
+                                    i(class="fa fa-lg fa-fw fa-smile-o")
+                                    | Hello! #{' '} Sign In/Up 
+                        ul(class="nav navbar-nav", ng-show="currentUser")
+                            li(class="dropdown")
+                                a(class="dropdown-toggle", href="#") 
+                                    | Welcome, #{' '} {{currentUser.username}} 
+                                    span(class="caret")
+                                ul(class="dropdown-menu", role="menu")
+                                    li
+                                        a(ng-click="logout()")
+                                            i(class="fa fa-lg fa-fw fa-arrow-circle-left")
+                                            | Logout
+                            li
+                                img(ng-src="{{currentUser.photo}}", class="img-rounded", height="50px")
+
+        block content
+        // script.
+        //     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        //     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        //     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        //     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        //     ga('create', 'UA-XXXXX-X');
+        //     ga('send', 'pageview');
+
+        script(src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js")
+        script(src="bower_components/jquery/dist/jquery.min.js")
+        script(src="bower_components/jquery.easing/js/jquery.easing.min.js")
+        script(src="bower_components/bootstrap/dist/js/bootstrap.min.js")
+        script(src="bower_components/angular/angular.js")
+        script(src="bower_components/angular-ui-router/release/angular-ui-router.min.js")
+        script(src="bower_components/angular-http-auth/src/http-auth-interceptor.js")
+        script(src="bower_components/angular-animate/angular-animate.min.js")
+        script(src="bower_components/angular-resource/angular-resource.min.js")
+        script(src="bower_components/angular-cookies/angular-cookies.min.js")
+        script(src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js")
+        script(src="javascripts/app.js")
+        script(src="javascripts/services.js")
+        script(src="javascripts/controllers.js")
+        script(src="javascripts/filters.js")
+        script(src="javascripts/directives.js")
+        script(src="bower_components/bootstrapvalidator/dist/js/bootstrapValidator.min.js")
+        script(src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js")

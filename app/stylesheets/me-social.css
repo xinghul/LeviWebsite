@@ -1,0 +1,256 @@
+#me {
+  z-index: 100;
+  position: relative;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.social-buttons section {
+  display: none;
+}
+
+.social-buttons section, .social-buttons section div {
+  cursor: pointer;
+  transition: .7s;
+}
+
+.social-buttons section {
+  padding: .375rem;
+  height: 3.5rem;
+  width: 12rem;
+  background: #A9ADB6;
+  border-radius: .25rem;
+  perspective: 300;
+  -webkit-perspective: 300;
+  box-shadow: 0 -1px 2px #fff, inset 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+}
+.social-buttons section:hover {
+  background: #EBEFF2;
+}
+.social-buttons section:hover .button {
+  opacity: 1;
+}
+.social-buttons section:hover .cover, .social-buttons section:hover .innie, .social-buttons section:hover .spine, .social-buttons section:hover .outie {
+  transition-timing-function: cubic-bezier(0.2, 0.7, 0.1, 1.1);
+  -webkit-transition-timing-function: cubic-bezier(0.2, 0.7, 0.1, 1.1);
+}
+.social-buttons section:hover .cover {
+  -webkit-transform: rotateX(-120deg);
+}
+.social-buttons section:hover .outie {
+  color: rgba(255, 255, 255, 0);
+}
+.social-buttons section:hover .shadow {
+  opacity: 1;
+  -webkit-transform: rotateX(45deg) scale(1);
+  transform: rotateX(45deg) scale(1);
+}
+.social-buttons .button {
+  opacity: 0;
+}
+.social-buttons .button .btn {
+  padding: 3px 0 3px 0;
+  text-align: center;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  position: relative;
+  background-color: #f8f8f8;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dedede));
+  background-image: -moz-linear-gradient(top, #fff, #dedede);
+  background-image: -o-linear-gradient(top, #fff, #dedede);
+  background-image: -ms-linear-gradient(top, #fff, #dedede);
+  background-image: linear-gradient(to bottom, #ffffff, #dedede);
+  border: #ccc solid 1px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  color: #333;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  overflow: hidden;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.social-buttons .button .btn .label {
+  vertical-align: -15%;
+  color: black;
+  font-size: 18px;
+}
+.social-buttons .cover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-transform-origin: center bottom;
+  -webkit-transform-style: preserve-3d;
+  transform-origin: center bottom;
+  transform-style: preserve-3d;
+  font: 1.25em/2 "zocial";
+  color: white;
+  text-align: center;
+  pointer-events: none;
+}
+.social-buttons .cover .innie {
+  text-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+  left: 0;
+}
+.social-buttons .cover .spine {
+  top: .25rem;
+  height: .25rem;
+  -webkit-transform: rotateX(90deg);
+  -webkit-transform-origin: center top;
+  transform: rotateX(90deg);
+  transform-origin: center top;
+}
+.social-buttons .cover .outie {
+  -webkit-transform: translateZ(0.25rem);
+  transform: translateZ(0.25rem);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  left: 0;
+}
+.social-buttons .shadow {
+  top: 100%;
+  left: 0;
+  height: 3.5rem;
+  -webkit-transform-origin: center top;
+  -webkit-transform: rotateX(90deg);
+  transform-origin: center top;
+  transform: rotateX(90deg);
+  opacity: 0;
+  z-index: 0;
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+  border-radius: .4rem;
+}
+.social-buttons .innie, .social-buttons .outie, .social-buttons .spine, .social-buttons .shadow {
+  position: absolute;
+  width: 100%;
+}
+.social-buttons .innie, .social-buttons .outie {
+  height: 100%;
+  background-image: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
+  border-radius: .25rem;
+}
+
+#twitter {
+  z-index: 90;
+}
+#twitter .cover {
+  z-index: 95;
+}
+#twitter .cover .innie {
+  background-color: #67E2FE;
+}
+#twitter .cover .spine {
+  background: #20C7F3;
+}
+#twitter .cover .outie {
+  background-color: #3d4042;
+}
+#twitter .button .btn .icon {
+  color: #01b7ee;
+}
+#twitter .shadow {
+  z-index: 85;
+}
+#twitter:hover .cover .outie {
+  background-color: #01b7ee;
+}
+
+#facebook {
+  z-index: 80;
+}
+#facebook .cover {
+  z-index: 85;
+}
+#facebook .cover .innie {
+  background-color: #3b5998;
+}
+#facebook .cover .spine {
+  background: #3b5998;
+}
+#facebook .cover .outie {
+  background-color: #3d4042;
+}
+#facebook .button .btn .icon {
+  color: #3b5998;
+}
+#facebook .shadow {
+  z-index: 75;
+}
+#facebook:hover .cover .outie {
+  background-color: #3b5998;
+}
+
+#google-plus {
+  z-index: 70;
+}
+#google-plus .cover {
+  z-index: 75;
+}
+#google-plus .cover .innie {
+  background-color: #c63d2d;
+}
+#google-plus .cover .spine {
+  background: #c63d2d;
+}
+#google-plus .cover .outie {
+  background-color: #3d4042;
+}
+#google-plus .button .btn .icon {
+  color: #c63d2d;
+}
+#google-plus .shadow {
+  z-index: 65;
+}
+#google-plus:hover .cover .outie {
+  background-color: #c63d2d;
+}
+
+#linkedin {
+  z-index: 60;
+}
+#linkedin .cover {
+  z-index: 65;
+}
+#linkedin .cover .innie {
+  background-color: #4875b4;
+}
+#linkedin .cover .spine {
+  background: #4875b4;
+}
+#linkedin .cover .outie {
+  background-color: #3d4042;
+}
+#linkedin .button .btn .icon {
+  color: #4875b4;
+}
+#linkedin .shadow {
+  z-index: 55;
+}
+#linkedin:hover .cover .outie {
+  background-color: #4875b4;
+}
+

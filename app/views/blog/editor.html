@@ -1,0 +1,85 @@
+
+<link rel="stylesheet" type="text/css" href="ckeditor/skins/bootstrapck/editor.css?t=E1PE"/>
+<link rel="stylesheet" type="text/css" href="bower_components/bootstrap-markdown/css/bootstrap-markdown.min.css"/>
+<script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="ckeditor/config.js?t=E1PE"></script>
+<script type="text/javascript" src="ckeditor/lang/en.js?t=E1PE"></script>
+<script type="text/javascript" src="ckeditor/styles.js?t=E1PE"></script>
+<script type="text/javascript" src="bower_components/marked/lib/marked.js"></script>
+<script type="text/javascript" src="bower_components/markdown/lib/markdown.js"></script>
+<script type="text/javascript" src="bower_components/to-markdown/src/to-markdown.js"></script>
+<script type="text/javascript" src="bower_components/bootstrap-markdown/js/bootstrap-markdown.js"></script>
+<div class="col-md-12">
+  <form role="form" class="form-horizontal">
+    <div class="col-md-2">
+      <div class="form-group">
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-flag fa-fw fa-lg"></i></span>
+          <input type="text" placeholder="Article title" ng-model="article['title']" class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-meh-o fa-fw fa-lg"></i></span>
+          <input type="text" placeholder="Author" ng-model="article['author']" class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-6">
+            <label class="btn btn-warning active"><i class="fa fa-fw fa-lg fa-paper-plane-o"></i>Publish</label>
+          </div>
+          <div class="col-md-6">
+            <div class="switch round large">
+              <input id="publish" type="checkbox" ng-model="publish"/>
+              <label for="publish"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-image fa-fw fa-lg"></i></span>
+          <input type="text" placeholder="Logo" ng-model="article['logo']" class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-tag fa-fw fa-lg"></i></span>
+          <input type="text" placeholder="New tag" ng-model="newtag" class="form-control"/>
+          <button ng-click="addTag()" class="form-control btn btn-success">Add</button>
+        </div>
+        <div class="checkbox">
+          <div ng-repeat="tag in tags">
+            <label>
+              <input type="checkbox" ng-model="tagSelected[tag.name]"/>{{tag.name}}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-offset-1 col-md-9">
+      <div class="form-group">
+        <div class="btn-toolbar">
+          <div data-toggle="buttons" class="btn-group">
+            <label ng-click="changeMode('CKEditor')" class="btn btn-primary">
+              <input type="radio"/>CKEditor
+            </label>
+            <label ng-click="changeMode('Markdown')" class="btn btn-danger active">
+              <input type="radio"/>Markdown
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div ng-show="editorMode === 'CKEditor'">
+          <div id="editor"></div>
+          <div id="preview"></div>
+          <button ng-click="preview()" class="btn btn-primary">Preview</button>
+        </div>
+        <div ng-show="editorMode === 'Markdown'">
+          <textarea id="Markdown"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <button ng-click="addArticle()" class="btn btn-lg btn-success"><i class="fa fa-fw fa-lg fa-check-circle"></i>Submit</button><a ui-sref="blog.list" class="btn btn-lg btn-default"><i class="fa fa-fw fa-lg fa-close"></i>Cancel</a>
+      </div>
+    </div>
+  </form>
+</div>

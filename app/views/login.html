@@ -1,0 +1,38 @@
+
+<div id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="labelEditNode" aria-hidden="true" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+        <h4 class="modal-title">Login</h4>
+      </div>
+      <div class="modal-body">
+        <h1 class="text-center login-title">Sign in to continue to Levi-Lu.net</h1>
+        <div class="account-wall"><img src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="" class="profile-img"/>
+          <form name="form" ng-submit="login(form)" novalidate="novalidate" class="form-signin">
+            <div ng-class="{'has-error': form.email.$error.mongoose}" class="form-group">
+              <div class="input-group"><span class="input-group-addon"><i class="fa fa-fw fa-lg fa-envelope"></i></span>
+                <input type="text" placeholder="Email" name="email" ng-model="user.email" required="required" autofocus="autofocus" mongoose-error="mongoose-error" class="form-control"/>
+              </div>
+              <p ng-show="form.email.$error.mongoose" class="help-block">{{ errors.email }}</p>
+            </div>
+            <div ng-class="{'has-error': form.password.$error.mongoose}" class="form-group">
+              <div class="input-group"><span class="input-group-addon"><i class="fa fa-fw fa-lg fa-lock"></i></span>
+                <input type="password" placeholder="Password" name="password" ng-model="user.password" required="required" mongoose-error="mongoose-error" class="form-control"/>
+              </div>
+              <p ng-show="form.password.$error.mongoose" class="help-block">{{ errors.password }}</p>
+            </div>
+            <div class="form-group has-error">
+              <p class="help-block">{{ error.other }}</p>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button><span class="clearfix"></span>
+          </form>
+        </div><a href="/signup" class="text-center new-account">Create an account</a>
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-default">Close</button>
+        <button data-dismiss="modal" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+.col-md-12
+    .row
+        .col-md-4
+            i
+                | placeholder: blog description, filter box, etc.
+        .col-md-4
+            div(id="btnPost", style="display:inline-block", ng-attr-original-title="{{ currentUser.admin ? '' : 'Only admin can post articles.' }}", ng-style="{ 'cursor': (currentUser.admin ? 'auto' : 'no-drop') }", data-toggle="tooltip", data-placement="right")
+                a(class="btn btn-success", ng-class="{disabled : !currentUser.admin}", ui-sref="blog.editor") 
+                    i(class="fa fa-lg fa-fw fa-pencil-square-o")
+                    | Post
+div(ng-repeat="article in articles")
+    .col-md-6.col-xs-12
+        div(class="blog-grid")
+            a(ui-sref="blog.article({index: articles.indexOf(article)})")
+                img(ng-src="/images/blog/{{article.logo}}.jpg", class="blog-grid-logo")
+            div(class="blog-grid-content")
+                div(class="blog-grid-info")
+                    .row
+                        .col-xs-4 
+                            i(class="fa fa-fw fa-pencil")
+                            | {{article.author}}
+                        .col-xs-4 
+                            i(class="fa fa-fw fa-calendar")
+                            | {{parseDate(article.date)}}
+                        .col-xs-4 
+                            i(class="fa fa-fw fa-eye")
+                            | {{article.views}} views
+                        .col-xs-12
+                            i(class="fa fa-fw fa-tags")
+                            span(ng-repeat="tag in article.tag", ng-style="{'background-color': tagColor[tag]}") {{tag}}
+                a(ui-sref="blog.article({index: articles.indexOf(article)})") {{article.title}}
+
+script.
+    $("#btnPost").tooltip();
+    

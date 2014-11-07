@@ -1,0 +1,75 @@
+link(rel='stylesheet', type='text/css', href='ckeditor/skins/bootstrapck/editor.css?t=E1PE')
+link(rel="stylesheet", type="text/css", href="bower_components/bootstrap-markdown/css/bootstrap-markdown.min.css")
+script(type='text/javascript', src='ckeditor/ckeditor.js')
+script(type='text/javascript', src='ckeditor/config.js?t=E1PE')
+script(type='text/javascript', src='ckeditor/lang/en.js?t=E1PE')
+script(type='text/javascript', src='ckeditor/styles.js?t=E1PE')
+script(type="text/javascript", src="bower_components/marked/lib/marked.js")
+script(type="text/javascript", src="bower_components/markdown/lib/markdown.js")
+script(type="text/javascript", src="bower_components/to-markdown/src/to-markdown.js")
+script(type="text/javascript", src="bower_components/bootstrap-markdown/js/bootstrap-markdown.js")
+
+.col-md-12
+    form.form-horizontal(role="form")
+        .col-md-2
+            div(class="form-group")
+                div(class="input-group")
+                    span(class="input-group-addon")
+                        i(class="fa fa-flag fa-fw fa-lg")
+                    input(class="form-control", type="text", placeholder="Article title", ng-model="article['title']")
+            div(class="form-group")
+                div(class="input-group")
+                    span(class="input-group-addon")
+                        i(class="fa fa-meh-o fa-fw fa-lg")
+                    input(class="form-control", type="text", placeholder="Author", ng-model="article['author']")
+            div(class="form-group")
+                .row
+                    .col-md-6
+                        label(class="btn btn-warning active") 
+                            i(class="fa fa-fw fa-lg fa-paper-plane-o")
+                            | Publish
+                    .col-md-6
+                        div(class="switch round large")
+                            input(id="publish", type="checkbox", ng-model="publish")
+                            label(for="publish")
+            div(class="form-group")
+                div(class="input-group")
+                    span(class="input-group-addon")
+                        i(class="fa fa-image fa-fw fa-lg")
+                    input(class="form-control", type="text", placeholder="Logo", ng-model="article['logo']")
+            div(class="form-group")
+                div(class="input-group")
+                    span(class="input-group-addon")
+                        i(class="fa fa-tag fa-fw fa-lg")
+                    input(class="form-control", type="text", placeholder="New tag", ng-model="newtag")
+                    button(class="form-control", class="btn btn-success", ng-click="addTag()") Add
+                div(class="checkbox")
+                    div(ng-repeat="tag in tags")
+                        label
+                            input(type="checkbox", ng-model="tagSelected[tag.name]") 
+                            | {{tag.name}}
+
+        .col-md-offset-1.col-md-9
+            div(class="form-group")
+                div(class="btn-toolbar")
+                    div(class="btn-group", data-toggle="buttons")
+                        label(class="btn btn-primary", ng-click="changeMode('CKEditor')")
+                            input(type="radio")
+                            | CKEditor
+                        label(class="btn btn-danger active", ng-click="changeMode('Markdown')")
+                            input(type="radio")
+                            | Markdown
+            div(class="form-group")
+                div(ng-show="editorMode === 'CKEditor'")
+                    #editor
+                    #preview
+                    button.btn.btn-primary(ng-click='preview()') Preview
+                div(ng-show="editorMode === 'Markdown'")
+                    textarea(id="Markdown")
+            div(class="form-group")
+                button(class="btn btn-lg btn-success", ng-click='addArticle()') 
+                    i(class="fa fa-fw fa-lg fa-check-circle")
+                    | Submit
+                a(class="btn btn-lg btn-default", ui-sref="blog.list") 
+                    i(class="fa fa-fw fa-lg fa-close")
+                    | Cancel

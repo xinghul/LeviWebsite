@@ -1,0 +1,23 @@
+link(rel='stylesheet', type='text/css', href='stylesheets/demo/boxshadow.css')
+nav.navbar.navbar-default(role="navigation")
+    .container-fluid
+        .navbar-header
+            button(class="navbar-toggle", data-toggle="collapse", data-target="#demoNav")
+            a.navbar-brand(href="#/demo") Demo
+        .collapse.navbar-collapse(id="demoNav")
+            ul.nav.navbar-nav
+                li(class="dropdown")
+                    a(class="dropdown-toggle", href="#/demo") 
+                        | dBeacon
+                        | #{' '}
+                        span(class="fa fa-caret-down")
+                    ul(class="dropdown-menu", role="menu")
+                        li
+                            a(ui-sref=".dbeacon") Force
+                        li
+                            a(ui-sref=".dbeacon-chord") Chord
+                //- li(ui-sref-active="active")
+                //-     a(ui-sref=".boxshadow") Box Shadow
+.row
+    div(class="ui-view-container")
+        .ui-view

@@ -1,0 +1,21 @@
+.col-md-12
+    div(class="article-block")
+        div(class="article-title")
+            h1 {{article.title}}
+        div(class="article-info")
+            .col-md-2 
+                i(class="fa fa-fw fa-pencil")
+                | {{article.author}}
+            .col-md-2  
+                i(class="fa fa-fw fa-calendar")
+                | {{parseDate(article.date)}}
+            .col-md-2  
+                i(class="fa fa-fw fa-eye")
+                | {{article.views}} views
+            .col-md-6(class="text-right")
+                i(class="fa fa-fw fa-tags")
+                span(ng-repeat="tag in article.tag", ng-style="{'background-color': tagColor[tag]}") {{tag}}
+        div(class="article-content")
+            div(ng-bind-html="toTrustedHTML(article.content)")
+        div(class="article-comment")
+            button(class="btn btn-default", ng-click="deleteArticle()", ng-show="currentUser.admin") delete

@@ -1,0 +1,93 @@
+
+<div class="row">
+  <div class="col-md-6 col-xs-12">
+    <div class="row intro-block">
+      <div class="col-md-5"><img src="/images/levi.jpg" id="me" class="img-thumbnail"/>
+        <div class="social-buttons">
+          <div ng-repeat="icon in socialIcons">
+            <section id="{{icon.name}}">
+              <div class="button"><a href="{{icon.href}}" target="_blank" class="btn"><span ng-class="'fa-' + icon.name" class="icon fa fa-lg"></span><span class="label">{{icon.label}}</span></a></div>
+              <div class="cover">
+                <div class="innie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
+                <div class="spine"></div>
+                <div class="outie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
+              </div>
+              <div class="shadow"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <p>I'm Levi Lu, a full-stack web developer.</p>
+        <p><i class="fa fa-lg fa-fw fa-check text-success"></i> 
+          Bachelor's degree of CS @ Tsinghua University
+        </p>
+        <p><i class="fa fa-lg fa-fw fa-refresh fa-spin text-warning"></i> 
+          Pursuing MET @ Carnegie Mellon University
+        </p>
+        <p>
+           
+          I built this website from scratch, using <a href="http://meanjs.org/">MEAN stack</a>. 
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-xs-12">
+    <div class="row skill-block">
+      <div class="col-md-12">
+        <div class="panel panel-warning">
+          <div class="panel-heading">WEB</div>
+          <div class="panel-body">
+            <div data-percent="63%" class="skillbar">
+              <div style="background: rgb(227, 82, 48);" class="title"><span>HTML5</span></div>
+              <div style="background: rgb(239, 103, 55);" class="bar"></div>
+            </div>
+            <div data-percent="65%" class="skillbar">
+              <div style="background: rgb(24, 116, 182);" class="title"><span>CSS3</span></div>
+              <div style="background: rgb(56, 170, 218);" class="bar"></div>
+            </div>
+            <div data-percent="70%" class="skillbar">
+              <div style="background: rgb(227, 161, 56);" class="title"><span>JavaScript</span></div>
+              <div style="background: rgb(240, 190, 58);" class="bar"></div>
+            </div>
+            <div data-percent="50%" class="skillbar">
+              <div style="background: rgb(184, 44, 55);" class="title"><span>AngularJS</span></div>
+              <div style="background: rgb(228, 47, 61);" class="bar"></div>
+            </div>
+            <div data-percent="45%" class="skillbar">
+              <div style="background: rgb(29, 140, 147);" class="title"><span>D3JS</span></div>
+              <div style="background: rgb(45, 214, 224);" class="bar"></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-warning">
+          <div class="panel-heading">DATABASE</div>
+          <div class="panel-body">
+            <div data-percent="65%" class="skillbar">
+              <div style="background: rgb(0, 143, 63);" class="title"><span>MongoDB</span></div>
+              <div style="background: rgb(54, 164, 64);" class="bar"></div>
+            </div>
+            <div data-percent="55%" class="skillbar">
+              <div style="background: rgb(35, 108, 125);" class="title"><span>Neo4j</span></div>
+              <div style="background: rgb(80, 159, 178);" class="bar"></div>
+            </div>
+            <div data-percent="30%" class="skillbar">
+              <div style="background: rgb(232, 123, 0);" class="title"><span>MySQL</span></div>
+              <div style="background: rgb(237, 167, 88);" class="bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var delay = 3000;
+  $('.skillbar').each(function(){
+      $(this).find('.bar').delay(delay).animate({
+          width: $(this).attr('data-percent')
+      }, 1000, "easeOutBounce");
+      delay += 300;
+  });
+  
+</script>
