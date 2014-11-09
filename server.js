@@ -12,7 +12,8 @@
     var favicon      = require('serve-favicon'),
         logger       = require('morgan'),
         cookieParser = require('cookie-parser'),
-        bodyParser   = require('body-parser');
+        bodyParser   = require('body-parser'),
+        debug        = require('debug')('Levi Lu');
     
     require('dotenv').load();
     var app          = express(),
@@ -102,6 +103,10 @@
         });
     });
 
-    module.exports = app;
+    app.set("port", process.env.PORT ||  3001);
+
+    app.listen(app.get("port"), function() {
+        console.log("Levi Lu'server listening on port " + app.get("port"));
+    });
 }());
     

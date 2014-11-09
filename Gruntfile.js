@@ -1,15 +1,62 @@
+"use strict";
+
 module.exports = function(grunt){ 
     // load plugins
-    [
-        'grunt-cafe-mocha',
-        'grunt-contrib-jshint',
-        'grunt-exec',
-        'grunt-contrib-jade',
-    ].forEach(function (task){ 
-        grunt.loadNpmTasks(task);
-    });
+    require('load-grunt-tasks')(grunt);
+    require('time-grunt')(grunt);
+
     // configure plugins
     grunt.initConfig({
+        express: {
+            options: {
+                port: process.env.PORT || 3001
+            },
+            dev: {
+                options: {
+                    script: 'server.js'
+                }
+            },
+            prod: {
+                options: {
+                    script: 'server.js',
+                    node_env: 'production'
+                }
+            }
+        },
+        open: {
+            server: {
+                url: "http://localhost:<%= express.options.port %>",
+                app: "Google Chrome"
+            }
+        },
+        watch: {
+            express: {
+                files: [
+                    "server.js",
+                    "lib/{,*/}*.js",
+                    "routes/{,*/}*.js",
+                    "app/javascripts/{,*/}*.js"
+                ],
+                tasks: ["express:dev"],
+                options: {
+                    nospawn: true //Without this option specified express won't be reloaded
+                }
+            },
+            jade: {
+                files: ["build/jade/**/*.jade"],
+                tasks: ["jade"],
+            },
+            sass: {
+                files: ["build/sass/**/*.scss"],
+                tasks: ["sass"],
+            }
+        },
+        concurrent: {
+            build: [
+                "jade",
+                "sass"
+            ]
+        },
         cafemocha: {
             all: { 
                 src: 'qa/tests-*.js', 
@@ -42,15 +89,41 @@ module.exports = function(grunt){
                     pretty: true,
                 },
                 files: [ {
-                    cwd: "app/build/jade",
+                    expand: true,
+                    cwd: "build/jade",
                     src: "**/*.jade",
                     dest: "app/views",
-                    expand: true,
                     ext: ".html"
                 } ]
             }
         },
+        sass: {                              // Task
+            dist: {                            // Target
+                options: {                       // Target options
+                    style: "expanded"
+                },
+                files: [ {                         // Dictionary of files
+                    expand: true,
+                    cwd: "build/sass",
+                    src: ["**/*.scss"],
+                    dest: "app/stylesheets",
+                    ext: ".css"
+                } ]
+            }
+        }
     });
+
     // register tasks
-    grunt.registerTask('default', ['jade']);
+    grunt.registerTask("build", ["concurrent:build"]);
+
+    grunt.registerTask('server', function (target) {
+        grunt.task.run([
+            // 'clean:server',
+            'concurrent:build',
+            // 'autoprefixer',
+            'express:dev',
+            'open',
+            'watch'
+        ]);
+    });
 };
