@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "",
-"sources": [],
+"mappings": "AAAA,GAAI;EACA,SAAS,EAAE,IAAI;;;ACEf,GAAI;EACA,SAAS,EAAE,IAAI",
+"sources": ["../../build/sass/components/_navbar.scss","../../build/sass/base.scss"],
 "names": [],
 "file": "base.css"
 }

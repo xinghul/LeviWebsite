@@ -3,3 +3,5 @@ logs/*
 node_modules/
 app/bower_components/
 *.pem
+.newer-cache
+.sass-cache

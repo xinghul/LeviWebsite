@@ -44,17 +44,17 @@ module.exports = function(grunt){
             },
             jade: {
                 files: ["build/jade/**/*.jade"],
-                tasks: ["jade"],
+                tasks: ["newer:jade"],
             },
             sass: {
                 files: ["build/sass/**/*.scss"],
-                tasks: ["sass"],
+                tasks: ["newer:sass"],
             }
         },
         concurrent: {
             build: [
-                "jade",
-                "sass"
+                "newer:jade",
+                "newer:sass"
             ]
         },
         cafemocha: {
@@ -97,6 +97,19 @@ module.exports = function(grunt){
                 } ]
             }
         },
+        newer: {
+            options: {
+                cache: ".newer-cache",
+                override: function(detail, include) {
+                    if (detail.task === "sass") {
+                        // console.log("!", detail);
+                        checkForModifiedImports(detail.path, detail.time, include);
+                    } else {
+                        include(false);
+                    }
+                }
+            }
+        },
         sass: {                              // Task
             dist: {                            // Target
                 options: {                       // Target options
@@ -104,10 +117,10 @@ module.exports = function(grunt){
                 },
                 files: [ {                         // Dictionary of files
                     expand: true,
-                    cwd: "build/sass",
-                    src: ["**/*.scss"],
-                    dest: "app/stylesheets",
-                    ext: ".css"
+                    cwd  : "build/sass",
+                    src  : ["**/*.scss"],
+                    dest : "app/stylesheets",
+                    ext  : ".css"
                 } ]
             }
         }
@@ -127,3 +140,33 @@ module.exports = function(grunt){
         ]);
     });
 };
+
+var fs = require('fs');
+var path = require('path');
+ 
+function checkForModifiedImports(lessFile, mTime, include) {
+    fs.readFile(lessFile, "utf8", function(err, data) {
+        var lessDir = path.dirname(lessFile),
+            regex = /@import "(.+?)(\.scss)?";/g,
+            shouldInclude = false,                
+            match;
+ 
+        while ((match = regex.exec(data)) !== null) {
+            var tokens = match[1].split("/");
+            tokens[tokens.length - 1] = "_" + tokens[tokens.length - 1];
+            // All of my less files are in the same directory,
+            // other paths may need to be traversed for different setups...
+            var importFile = lessDir + '/' + tokens.join("/") + '.scss';
+            // console.log("*", importFile);
+            if (fs.existsSync(importFile)) {
+                // console.log("*", "changed");
+                var stat = fs.statSync(importFile);
+                if (stat.mtime > mTime) {
+                    shouldInclude = true;
+                    break;
+                }
+            }
+        }
+        include(shouldInclude);
+    });
+}
