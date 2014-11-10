@@ -72,9 +72,10 @@
             });
             for (var key in nodes) 
             {
-                var node = nodes[key]
-                ,   tmp = {};
-                tmp.name = node.data.name;
+                var node = nodes[key],
+                    tmp  = {};
+                tmp.label     = node.data.label;
+                tmp.name      = node.data.name;
                 tmp.neighbors = node.neighbors;
                 data.push(tmp);
             }

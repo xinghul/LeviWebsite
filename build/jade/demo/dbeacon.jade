@@ -1,32 +1,34 @@
-.col-md-2.col-xs-6
-  form
-    fieldset#color-table-node
-      h3
-        small Node Labels
-    .btn-toolbar.text-center
-      button(class='btn btn-success', data-toggle="modal", data-target="#modalAddNode", id="showModalAddNode") Add Node
-  form
-    fieldset#color-table-link
-      h3
-        small Relationship Types
-    .btn-toolbar.text-center
-      button(type="button", id="test", class='btn btn-warning', data-container="body", data-toggle="popover", data-placement="bottom", ng-click="chooseNodes()") Add Relationship
+.col-md-2.col-xs-12
+  .col-md-12.col-xs-6
+    form
+      fieldset#color-table-node
+        h1
+          small Node Labels
+      .btn-toolbar.text-center
+        button(class='btn btn-success', data-toggle="modal", data-target="#modalAddNode", id="showModalAddNode") Add Node
+  .col-md-12.col-xs-6
+    form
+      fieldset#color-table-link
+        h1
+          small Relationship Types
+      .btn-toolbar.text-center
+        button(type="button", id="test", class='btn btn-warning', data-container="body", data-toggle="popover", data-placement="bottom", ng-click="chooseNodes()") Add Relationship
   
-.col-md-8.col-xs-12
+.col-md-7.col-xs-12
   .col-md-12
     #frame
       //- #overlay(ng-show="addingRls", style="position:absolute;z-index:-1;width:100%;height:800px;opacity:0.6;background-color:#000")
-  .col-md-8
+  .col-md-8.col-xs-8
     .text-success(ng-show='graphInfo')
       span.glyphicon.glyphicon-ok
       span &nbsp
       span {{graphInfo}}
-  .col-md-4
-    .btn-toolbar.text-right
-      button(class="btn btn-info", id="btnDetail")
-        i(class="fa fa-lg fa-eye-slash") Hide Details
+  .col-md-offset-1.col-md-3.col-xs-offset-1.col-xs-3
+    button(class="btn btn-block btn-info", id="btnDetail")
+      i(class="fa fa-fw fa-lg fa-eye-slash") 
+      span Hide Details
 
-.col-md-2.col-xs-6
+.col-md-3.col-xs-6
   h1(ng-model='nodeLabel')
     small {{nodeLabel}}
   div(ng-model='nodeInfo')
@@ -36,9 +38,11 @@
         td {{value}}
   div(class='btn-toolbar', ng-show='nodeId')
     button(class='btn btn-info', data-toggle="modal", data-target="#modalEdit", id="showModal") 
-      i(class="fa fa-edit fa-lg") Edit
+      i(class="fa fa-fw fa-edit fa-lg") 
+      | Edit
     button(ng-click='deleteNode()', class='btn btn-danger') 
-      i(class="fa fa-trash-o fa-lg") Delete
+      i(class="fa fa-fw fa-trash-o fa-lg") 
+      | Delete
 
   div(class="modal fade", id="modalEdit", tabindex="-1", role="dialog", aria-labelledby="labelEditNode", aria-hidden="true")
     .modal-dialog
@@ -124,20 +128,21 @@ script.
   //   console.log("123");
   // });
   $('#btnDetail').on('click', function () {
-    var i = $(this).find('i');
+    var i    = $(this).find('i'),
+        span = $(this).find("span");
     console.log();
     if (i.hasClass('fa-eye-slash')) {
       i.removeClass('fa-eye-slash');
       i.addClass('fa-eye');
       $('.textNode').hide(500);
       $('.textLink').hide(500);
-      i.text("Show Details");
+      span.text("Show Details");
     }
     else {
       i.removeClass('fa-eye');
       i.addClass('fa-eye-slash');
       $('.textNode').show(500);
       $('.textLink').show(500);
-      i.text("Hide Details");
+      span.text("Hide Details");
     }
   });

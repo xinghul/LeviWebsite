@@ -214,8 +214,7 @@
         .attr("x", 60)
         .attr("y", function (d, i) { return 40 * i + 25; })
         .text( function (d) { return d; })
-        .attr("font-family", "Open Sans")
-        .attr("font-size", 14);
+        .attr("font-size", 15);
 
         colorSvgNode.attr("height", heightSvg + 25);
         heightSvg = 0;
@@ -241,7 +240,6 @@
         .attr("x", 60)
         .attr("y", function (d, i) { return 40 * i + 25; })
         .text( function (d) { return d; })
-        .attr("font-family", "Open Sans")
         .attr("font-size", 14);
 
         colorSvgLink.attr("height", heightSvg + 25);
@@ -266,8 +264,7 @@
             .attr("class", "textLink")
             .attr("fill", "#606060")
             .attr("text-anchor", "middle")
-            .attr("font-family", "Open Sans")
-            .attr("font-size", "12px")
+            .attr("font-size", "16px")
             .attr("font-style", "italic")
             .text(function(d) { return d.type; });
 
@@ -285,8 +282,7 @@
             .attr("dy", 4)
             .attr("fill", "black")
             .attr("text-anchor", "middle")
-            .attr("font-family", "Open Sans")
-            .attr("font-size", "15px")
+            .attr("font-size", "18px")
             .text(function(d) { return d.data.name; });
       };
       function tick() {
@@ -336,8 +332,8 @@
         success(function (data, status, headers, config) {
           draw(data);
         });
-        var r = 360
-        ,   height = 960;
+        var r = 200
+        ,   height = 700;
 
         var fill = d3.scale.category20c();
 
@@ -367,6 +363,7 @@
         }
           
         function draw(nodes) {
+          console.log(nodes);
           var indexByName = {},
               nameByIndex = {},
               matrix = [],
