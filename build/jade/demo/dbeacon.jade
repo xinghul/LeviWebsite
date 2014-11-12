@@ -32,8 +32,8 @@
   h1(ng-model='nodeLabel')
     small {{nodeLabel}}
   div(ng-model='nodeInfo')
-    table.table.table-bordered.table-hover.table-striped
-      tr(ng-repeat='(key, value) in nodeInfo')
+    table.table.table-bordered.table-hover
+      tr(ng-repeat='(key, value) in nodeInfo', class="warning")
         th {{key}}
         td {{value}}
   div(class='btn-toolbar', ng-show='nodeId')

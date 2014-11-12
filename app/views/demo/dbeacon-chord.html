@@ -2,8 +2,8 @@
 <div class="col-md-2 col-xs-6">
   <div ng-show="nodeNeighbors">
     <h1><small>Neighbors</small></h1>
-    <table class="table table-bordered table-hover table-striped">
-      <tr ng-repeat="neighbor in nodeNeighbors">
+    <table class="table table-bordered table-hover">
+      <tr ng-repeat="neighbor in nodeNeighbors" class="warning">
         <th>{{neighbor}}</th>
       </tr>
     </table>
@@ -17,8 +17,8 @@
 <div class="col-md-3 col-xs-6">
   <div ng-show="nodeInfo">
     <h1><small>{{nodeInfo.name}}</small></h1>
-    <table class="table table-bordered table-hover table-striped">
-      <tr ng-repeat="(key, value) in nodeInfo">
+    <table class="table table-bordered table-hover">
+      <tr ng-repeat="(key, value) in nodeInfo" class="warning">
         <th>{{key}}</th>
         <td>{{value}}</td>
       </tr>

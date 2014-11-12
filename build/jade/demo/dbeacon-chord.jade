@@ -2,8 +2,8 @@
     div(ng-show='nodeNeighbors')
         h1
             small Neighbors
-        table.table.table-bordered.table-hover.table-striped
-            tr(ng-repeat='neighbor in nodeNeighbors')
+        table.table.table-bordered.table-hover
+            tr(ng-repeat='neighbor in nodeNeighbors', class="warning")
                 th {{neighbor}}
 
 .col-md-7.col-xs-12
@@ -14,7 +14,7 @@
     div(ng-show='nodeInfo')
         h1
             small {{nodeInfo.name}}
-        table.table.table-bordered.table-hover.table-striped
-            tr(ng-repeat='(key, value) in nodeInfo')
+        table.table.table-bordered.table-hover
+            tr(ng-repeat='(key, value) in nodeInfo', class="warning")
                 th {{key}}
                 td {{value}}
