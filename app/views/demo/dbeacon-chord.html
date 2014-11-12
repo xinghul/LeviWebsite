@@ -1,6 +1,6 @@
 
 <div class="col-md-2 col-xs-6">
-  <div ng-model="nodeNeighbors">
+  <div ng-show="nodeNeighbors">
     <h1><small>Neighbors</small></h1>
     <table class="table table-bordered table-hover table-striped">
       <tr ng-repeat="neighbor in nodeNeighbors">
@@ -15,7 +15,7 @@
   </div>
 </div>
 <div class="col-md-3 col-xs-6">
-  <div ng-model="nodeInfo">
+  <div ng-show="nodeInfo">
     <h1><small>{{nodeInfo.name}}</small></h1>
     <table class="table table-bordered table-hover table-striped">
       <tr ng-repeat="(key, value) in nodeInfo">

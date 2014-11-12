@@ -1,5 +1,5 @@
 .col-md-2.col-xs-6
-    div(ng-model='nodeNeighbors')
+    div(ng-show='nodeNeighbors')
         h1
             small Neighbors
         table.table.table-bordered.table-hover.table-striped
@@ -11,7 +11,7 @@
         #frame
 
 .col-md-3.col-xs-6
-    div(ng-model='nodeInfo')
+    div(ng-show='nodeInfo')
         h1
             small {{nodeInfo.name}}
         table.table.table-bordered.table-hover.table-striped
