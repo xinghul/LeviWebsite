@@ -77,6 +77,7 @@
                 tmp.label     = node.data.label;
                 tmp.name      = node.data.name;
                 tmp.neighbors = node.neighbors;
+                tmp.data      = node.data;
                 data.push(tmp);
             }
             res.send(data);

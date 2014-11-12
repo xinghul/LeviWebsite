@@ -53,8 +53,8 @@ module.exports = function(grunt){
         },
         concurrent: {
             build: [
-                "newer:jade",
-                "newer:sass"
+                "jade",
+                "sass"
             ]
         },
         cafemocha: {
@@ -103,7 +103,7 @@ module.exports = function(grunt){
                 override: function(detail, include) {
                     if (detail.task === "sass") {
                         // console.log("!", detail);
-                        checkForModifiedImports(detail.path, detail.time, include);
+                        checkForModifiedSassFile(detail.path, detail.time, include);
                     } else {
                         include(false);
                     }
@@ -144,9 +144,9 @@ module.exports = function(grunt){
 var fs = require('fs');
 var path = require('path');
  
-function checkForModifiedImports(lessFile, mTime, include) {
-    fs.readFile(lessFile, "utf8", function(err, data) {
-        var lessDir = path.dirname(lessFile),
+function checkForModifiedSassFile(sassFile, mTime, include) {
+    fs.readFile(sassFile, "utf8", function(err, data) {
+        var sassDir = path.dirname(sassFile),
             regex = /@import "(.+?)(\.scss)?";/g,
             shouldInclude = false,                
             match;
@@ -156,7 +156,7 @@ function checkForModifiedImports(lessFile, mTime, include) {
             tokens[tokens.length - 1] = "_" + tokens[tokens.length - 1];
             // All of my less files are in the same directory,
             // other paths may need to be traversed for different setups...
-            var importFile = lessDir + '/' + tokens.join("/") + '.scss';
+            var importFile = sassDir + '/' + tokens.join("/") + '.scss';
             // console.log("*", importFile);
             if (fs.existsSync(importFile)) {
                 // console.log("*", "changed");

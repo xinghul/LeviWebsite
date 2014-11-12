@@ -328,12 +328,19 @@
     })
 
     .controller('dBeaconChordCtrl', function ($scope, $http) {
+        $scope.data          = null;
+        $scope.nodeInfo      = null;
+        $scope.nodeNeighbors = null;
+
         $http.get('/api/dbeacon/relation').
         success(function (data, status, headers, config) {
+          $scope.data = data;
           draw(data);
         });
-        var r = 200
-        ,   height = 700;
+        var indexToData = [];
+
+        var r = 200,
+            height = 700;
 
         var fill = d3.scale.category20c();
 
@@ -363,34 +370,35 @@
         }
           
         function draw(nodes) {
-          console.log(nodes);
-          var indexByName = {},
-              nameByIndex = {},
+          var indexByName      = {},
+              nameByIndex      = {},
+              dataByIndex      = {},
+              neighborsByIndex = {},
               matrix = [],
-              n = 0;
-
-          function name(name) {
-            return name
-          }
+              index  = 0;
 
           // Compute a unique index for each name.
           nodes.forEach(function(d) {
-            d = name(d.name);
-            if (!(d in indexByName)) {
-              nameByIndex[n] = d;
-              indexByName[d] = n++;
+            if (!(d.name in indexByName)) {
+              nameByIndex[index]      = d.name;
+              dataByIndex[index]      = d.data;
+              neighborsByIndex[index] = d.neighbors;
+              indexByName[d.name]     = index ++;
             }
           });
 
           // Construct a square matrix counting relationships.
           nodes.forEach(function(d) {
-            var source = indexByName[name(d.name)],
+            var source = indexByName[d.name],
                 row = matrix[source];
             if (!row) {
-             row = matrix[source] = [];
-             for (var i = -1; ++i < n;) row[i] = 0;
+              row = matrix[source] = [];
+              for (var i = 0; i < index; i ++) 
+                row[i] = 0;
             }
-            d.neighbors.forEach(function(d) { row[indexByName[name(d)]]++; });
+            d.neighbors.forEach(function(d) { 
+              row[indexByName[d]]++; 
+            });
           });
 
           chord.matrix(matrix);
@@ -405,11 +413,16 @@
               .style("stroke", function(d) { return fill(d.index); })
               .attr("d", arc)
               .on("mouseover", fade(.1))
-              .on("mouseout", fade(1));
+              .on("mouseout", fade(1))
+              .on("click", nodeOnClick);
               
           
           g.append("text")
-              .each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
+              .each(function(d) { 
+                d.angle     = (d.startAngle + d.endAngle) / 2;
+                d.data      = dataByIndex[d.index];
+                d.neighbors = neighborsByIndex[d.index];
+              })
               .attr("dy", ".35em")
               .attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
               .attr("transform", function(d) {
@@ -426,6 +439,12 @@
               .style("stroke", function(d) { return d3.rgb(fill(d.source.index)).darker(); })
               .style("fill", function(d) { return fill(d.source.index); })
               .attr("d", d3.svg.chord().radius(r));
+        }
+
+        function nodeOnClick(d) {
+          $scope.nodeInfo      = d.data;
+          $scope.nodeNeighbors = _.uniq(d.neighbors);
+          $scope.$apply();
         }
     })
 

@@ -68,6 +68,10 @@
     /**********************************************************
      *                         Routes                         * 
      **********************************************************/
+    app.use(function(req, res, next) {
+        res.setHeader('Last-Modified', (new Date()).toUTCString());
+        next();
+    });
 
     var routes = require('./routes/index');
     app.use('/', routes);
