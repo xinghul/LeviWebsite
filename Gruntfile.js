@@ -33,6 +33,7 @@ module.exports = function(grunt){
             express: {
                 files: [
                     "server.js",
+                    "Gruntfile.js",
                     "lib/{,*/}*.js",
                     "routes/{,*/}*.js",
                     "app/javascripts/{,*/}*.js"
@@ -104,7 +105,13 @@ module.exports = function(grunt){
                     if (detail.task === "sass") {
                         // console.log("!", detail);
                         checkForModifiedSassFile(detail.path, detail.time, include);
-                    } else {
+                    }
+                    else if (detail.task === "jade") {
+                        // var inheritance = new JadeInheritance(detail.path, "build", grunt.config('jade.compile.options'));
+                        // console.log(inheritance.files);
+                        include(true);
+                    } 
+                    else {
                         include(false);
                     }
                 }
@@ -141,11 +148,12 @@ module.exports = function(grunt){
     });
 };
 
-var fs = require('fs');
-var path = require('path');
+var fs = require('fs'),
+    path = require('path'),
+    JadeInheritance = require('jade-inheritance');
  
 function checkForModifiedSassFile(sassFile, mTime, include) {
-    fs.readFile(sassFile, "utf8", function(err, data) {
+    fs.readFile(sassFile, "utf8", function (err, data) {
         var sassDir = path.dirname(sassFile),
             regex = /@import "(.+?)(\.scss)?";/g,
             shouldInclude = false,                
