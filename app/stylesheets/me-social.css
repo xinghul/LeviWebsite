@@ -14,7 +14,19 @@
 }
 
 .social-buttons section {
-  display: none;
+  /*display: none;*/
+  margin: auto;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+
+  padding: .375rem;
+  height: 4rem;
+  width: 14rem;
+  background: #A9ADB6;
+  border-radius: .25rem;
+  perspective: 300;
+  -webkit-perspective: 300;
+  box-shadow: 0 -1px 2px #fff, inset 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
 }
 
 .social-buttons section, .social-buttons section div {
@@ -22,16 +34,6 @@
   transition: .7s;
 }
 
-.social-buttons section {
-  padding: .375rem;
-  height: 3.5rem;
-  width: 12rem;
-  background: #A9ADB6;
-  border-radius: .25rem;
-  perspective: 300;
-  -webkit-perspective: 300;
-  box-shadow: 0 -1px 2px #fff, inset 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
-}
 .social-buttons section:hover {
   background: #EBEFF2;
 }
@@ -59,6 +61,7 @@
 .social-buttons .button .btn {
   padding: 3px 0 3px 0;
   text-align: center;
+  font-size: 1.9rem;
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: top;
@@ -93,7 +96,7 @@
 }
 
 .social-buttons .button .btn .label {
-  vertical-align: -15%;
+  vertical-align: -6%;
   color: black;
   font-size: 18px;
 }
@@ -155,28 +158,28 @@
 }
 
 #twitter {
-  z-index: 90;
+  z-index: 80;
 }
 #twitter .cover {
-  z-index: 95;
+  z-index: 85;
 }
 #twitter .cover .innie {
-  background-color: #67E2FE;
+  background-color: rgb(103, 201, 242);
 }
 #twitter .cover .spine {
-  background: #20C7F3;
+  background: rgb(0, 170, 228);
 }
 #twitter .cover .outie {
   background-color: #3d4042;
 }
 #twitter .button .btn .icon {
-  color: #01b7ee;
+  color: rgb(0, 170, 228);
 }
 #twitter .shadow {
-  z-index: 85;
+  z-index: 75;
 }
 #twitter:hover .cover .outie {
-  background-color: #01b7ee;
+  background-color: rgb(0, 170, 228);
 }
 
 #facebook {
@@ -186,71 +189,96 @@
   z-index: 85;
 }
 #facebook .cover .innie {
-  background-color: #3b5998;
+  background-color: rgb(109, 131, 179);
 }
 #facebook .cover .spine {
-  background: #3b5998;
+  background: rgb(59, 88, 150);
 }
 #facebook .cover .outie {
   background-color: #3d4042;
 }
 #facebook .button .btn .icon {
-  color: #3b5998;
+  color: rgb(59, 88, 150);
 }
 #facebook .shadow {
   z-index: 75;
 }
 #facebook:hover .cover .outie {
-  background-color: #3b5998;
+  background-color: rgb(59, 88, 150);
 }
 
 #google-plus {
-  z-index: 70;
+  z-index: 80;
 }
 #google-plus .cover {
-  z-index: 75;
+  z-index: 85;
 }
 #google-plus .cover .innie {
-  background-color: #c63d2d;
+  background-color: rgb(217, 64, 60);
 }
 #google-plus .cover .spine {
-  background: #c63d2d;
+  background: rgb(166, 42, 41);
 }
 #google-plus .cover .outie {
   background-color: #3d4042;
 }
 #google-plus .button .btn .icon {
-  color: #c63d2d;
+  color: rgb(166, 42, 41);
 }
 #google-plus .shadow {
-  z-index: 65;
+  z-index: 75;
 }
 #google-plus:hover .cover .outie {
-  background-color: #c63d2d;
+  background-color: rgb(166, 42, 41);
 }
 
 #linkedin {
-  z-index: 60;
+  z-index: 80;
 }
 #linkedin .cover {
-  z-index: 65;
+  z-index: 85;
 }
 #linkedin .cover .innie {
-  background-color: #4875b4;
+  background-color: rgb(64, 142, 181);
 }
 #linkedin .cover .spine {
-  background: #4875b4;
+  background: rgb(0, 101, 155);
 }
 #linkedin .cover .outie {
   background-color: #3d4042;
 }
 #linkedin .button .btn .icon {
-  color: #4875b4;
+  color: rgb(0, 101, 155);
 }
 #linkedin .shadow {
-  z-index: 55;
+  z-index: 75;
 }
 #linkedin:hover .cover .outie {
-  background-color: #4875b4;
+  background-color: rgb(0, 101, 155);
+}
+
+#github-alt {
+  z-index: 80;
+}
+#github-alt .cover {
+  z-index: 85;
+}
+#github-alt .cover .innie {
+  background-color: rgb(183, 163, 110);
+}
+#github-alt .cover .spine {
+  background: rgb(75, 56, 49);
+}
+#github-alt .cover .outie {
+  background-color: #3d4042;
+}
+#github-alt .button .btn .icon {
+  color: rgb(75, 56, 49);
+}
+#github-alt .shadow {
+  z-index: 75;
+}
+#github-alt:hover .cover .outie {
+  background-color: rgb(75, 56, 49);
 }
 

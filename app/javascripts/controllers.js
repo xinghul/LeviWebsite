@@ -680,39 +680,33 @@
         $scope.socialIcons = [
             {
                 "name"     : "facebook",
-                "position" : {
-                    "top"  : 140,
-                    "left" : 400
-                },
                 "href"     : "https://www.facebook.com/xinghu.lu.9",
                 "label"    : "Levi"
             },
             {
                 "name"     : "twitter",
-                "position" : {
-                    "top"  : 200,
-                    "left" : 400
-                },
                 "href"     : "https://twitter.com/XinghuLu",
                 "label"    : "@Levi"
             },
             {
                 "name"     : "google-plus",
-                "position" : {
-                    "top"  : 140,
-                    "left" : 250
-                },
                 "href"     : "https://plus.google.com/+XinghuLu",
                 "label"    : "+Levi"
             },
             {
                 "name"     : "linkedin",
-                "position" : {
-                    "top"  : 200,
-                    "left" : 250
-                },
                 "href"     : "https://www.linkedin.com/profile/view?id=308656312",
                 "label"    : "Levi"
+            },
+            {
+                "name"     : "github-alt",
+                "href"     : "https://github.com/xinghul",
+                "label"    : "xinghul"
+            },
+            {
+                "name"     : "file-pdf-o",
+                "href"     : "resume",
+                "label"    : "resume"
             }
         ];
         var loadIcons = function() {
@@ -739,7 +733,7 @@
         };
         $(document).ready(function() {
             setTimeout(function () {
-                loadIcons();
+                // loadIcons();
             }, 1000);
         });
     })

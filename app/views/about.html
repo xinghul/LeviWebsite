@@ -2,33 +2,40 @@
 <div class="row">
   <div class="col-md-6 col-xs-12">
     <div class="row intro-block">
-      <div class="col-md-5"><img src="/images/levi.jpg" id="me" class="img-thumbnail"/>
-        <div class="social-buttons">
-          <div ng-repeat="icon in socialIcons">
-            <section id="{{icon.name}}">
-              <div class="button"><a href="{{icon.href}}" target="_blank" class="btn"><span ng-class="'fa-' + icon.name" class="icon fa fa-lg"></span><span class="label">{{icon.label}}</span></a></div>
-              <div class="cover">
-                <div class="innie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
-                <div class="spine"></div>
-                <div class="outie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
-              </div>
-              <div class="shadow"></div>
-            </section>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-5"><img src="/images/levi.jpg" id="me" class="img-thumbnail"/></div>
+          <div class="col-md-7">
+            <p>I'm Levi Lu, a full-stack web developer.</p>
+            <p><i class="fa fa-lg fa-fw fa-check text-success"></i> 
+              Bachelor's degree of CS @ Tsinghua University
+            </p>
+            <p><i class="fa fa-lg fa-fw fa-refresh fa-spin text-warning"></i> 
+              Pursuing MET @ Carnegie Mellon University
+            </p>
+            <p>
+               
+              I built this website from scratch, using <a href="http://meanjs.org/">MEAN stack</a>. 
+            </p>
           </div>
         </div>
-      </div>
-      <div class="col-md-7">
-        <p>I'm Levi Lu, a full-stack web developer.</p>
-        <p><i class="fa fa-lg fa-fw fa-check text-success"></i> 
-          Bachelor's degree of CS @ Tsinghua University
-        </p>
-        <p><i class="fa fa-lg fa-fw fa-refresh fa-spin text-warning"></i> 
-          Pursuing MET @ Carnegie Mellon University
-        </p>
-        <p>
-           
-          I built this website from scratch, using <a href="http://meanjs.org/">MEAN stack</a>. 
-        </p>
+        <div class="row">
+          <div class="social-buttons">
+            <div ng-repeat="icon in socialIcons">
+              <div class="col-md-4 col-xs-6">
+                <section id="{{icon.name}}">
+                  <div class="button"><a href="{{icon.href}}" target="_blank" class="btn"><span ng-class="'fa-' + icon.name" class="icon fa fa-lg"></span><span class="label">{{icon.label}}</span></a></div>
+                  <div class="cover">
+                    <div class="innie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
+                    <div class="spine"></div>
+                    <div class="outie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
+                  </div>
+                  <div class="shadow"></div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -3,6 +3,7 @@
     var express        = require("express"),
         path           = require("path"),
         fs             = require("fs"),
+        mime           = require("mime"),
         router         = express.Router();
 
 
@@ -48,6 +49,19 @@
 
     router.get('/demo/:name', function (req, res) {
         res.render('demo/' + req.params.name);
+    });
+
+    router.get("/resume", function (req, res) {
+        var file = __dirname + "/resources/Resume_LeviLu.pdf";
+
+        var filename = path.basename(file);
+        var mimetype = mime.lookup(file);
+
+        res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+        res.setHeader('Content-type', mimetype);
+
+        var filestream = fs.createReadStream(file);
+        filestream.pipe(res);
     });
 
     router.use("/api", api);
