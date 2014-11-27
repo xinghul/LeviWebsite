@@ -107,6 +107,7 @@ module.exports = function(grunt){
                         checkForModifiedSassFile(detail.path, detail.time, include);
                     }
                     else if (detail.task === "jade") {
+                        //TODO
                         // var inheritance = new JadeInheritance(detail.path, "build", grunt.config('jade.compile.options'));
                         // console.log(inheritance.files);
                         include(true);

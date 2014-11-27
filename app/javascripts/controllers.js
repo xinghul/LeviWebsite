@@ -450,6 +450,7 @@
 
     .controller('BlogCtrl', function ($scope, $sce, $http) {
         $scope.articles = null;
+        $scope.colors   = null;
         $scope.tagColor = [];
         $scope.toTrustedHTML = function (code) {
             return $sce.trustAsHtml(code);
@@ -471,7 +472,7 @@
             day = tokens[2].substr(0, 2);
             return month + " " + day + ", " + year;
         };
-        $scope.randomColor = function () {
+        $scope.randomColors = function (count) {
             var hsv_to_rgb = function (h, s, v) {
                 var h_i = parseInt(h * 6);
                 var f = h * 6 - h_i;
@@ -509,11 +510,20 @@
                     g = p;
                     b = q;
                 }
-                return "rgb(" + parseInt(r * 256) + "," + parseInt(g * 256) + "," + parseInt(b*256) + ")";
+                return "rgb(" + parseInt(r * 256) + "," + parseInt(g * 256) + "," + parseInt(b * 256) + ")";
             }
-            var ratio = 0.618033988749895;
-            var h = (Math.random() + ratio) % 1;
-            return hsv_to_rgb(h, 0.5, 0.95);
+            var interval = 1 / count;
+            var ratio    = 0.618033988749895;
+            var startH   = (Math.random() + ratio) % 1;
+            var colors   = [];
+
+            for (var i = 0; i < count; i ++) 
+            {
+                var h = (startH + i * interval) % 1;
+                colors.push(hsv_to_rgb(h, 0.5, 0.95));
+            }
+
+            return colors;
         };
         $scope.getArticles = function () {
             $http.get('/api/blog/articles').
@@ -527,8 +537,9 @@
         $scope.setTagColor = function () {
             $http.get('/api/tags').
                 success(function (data, status, headers, config) {
+                    $scope.colors = $scope.randomColors(data.length);
                     data.forEach(function (tag) {
-                        $scope.tagColor[tag.name] = $scope.randomColor();
+                        $scope.tagColor[tag.name] = $scope.colors[data.indexOf(tag)];
                     });
                 }).
                 error(function (data, status, headers, config) {
