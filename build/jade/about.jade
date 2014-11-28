@@ -78,13 +78,4 @@
                                 span MySQL
                             div(class="bar", style="background: rgb(237, 167, 88);")
 
-script.
-    var delay = 3000;
-    $('.skillbar').each(function(){
-        $(this).find('.bar').delay(delay).animate({
-            width: $(this).attr('data-percent')
-        }, 1000, "easeOutBounce");
-        delay += 300;
-    });
-
     

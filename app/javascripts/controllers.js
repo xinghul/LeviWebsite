@@ -744,6 +744,13 @@
                 // resetIcons();
                 initOffset();
             }, 10);
+            var delay = 1000;
+            $('.skillbar').each(function(){
+                $(this).find('.bar').delay(delay).animate({
+                    width: $(this).attr('data-percent')
+                }, 1000, "easeOutBounce");
+                delay += 300;
+            });
             // setTimeout(function () {
             //     // loadIcons();
             // }, 100);
