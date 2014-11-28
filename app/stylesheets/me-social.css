@@ -16,11 +16,11 @@
 .social-buttons section {
   /*display: none;*/
   margin: auto;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
 
   padding: .375rem;
-  height: 4rem;
+  height: 4.5rem;
   width: 14rem;
   background: #A9ADB6;
   border-radius: .25rem;
@@ -61,7 +61,7 @@
 .social-buttons .button .btn {
   padding: 3px 0 3px 0;
   text-align: center;
-  font-size: 1.9rem;
+  font-size: 2.2rem;
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: top;
@@ -96,7 +96,6 @@
 }
 
 .social-buttons .button .btn .label {
-  vertical-align: -6%;
   color: black;
   font-size: 18px;
 }

@@ -20,22 +20,22 @@
                             | I built this website from scratch, using 
                             a(href="http://meanjs.org/") MEAN stack
                             | . 
-                .row
-                    div(class="social-buttons")
-                        div(ng-repeat="icon in socialIcons")
-                            .col-md-4.col-xs-6
-                                section(id="{{icon.name}}")
-                                    div(class="button")
-                                        a(class="btn", href="{{icon.href}}", target="_blank")
-                                            span(class="icon fa fa-lg", ng-class="'fa-' + icon.name")
-                                            span(class="label") {{icon.label}}
-                                    div(class="cover")
-                                        div(class="innie")
-                                            i(class="fa fa-lg", ng-class="'fa-' + icon.name")
-                                        div(class="spine")
-                                        div(class="outie")
-                                            i(class="fa fa-lg", ng-class="'fa-' + icon.name")
-                                    div(class="shadow")
+        .row
+            div(class="social-buttons")
+                div(ng-repeat="icon in socialIcons")
+                    .col-md-4.col-xs-6
+                        section(id="{{icon.name}}")
+                            div(class="button")
+                                a(class="btn", href="{{icon.href}}", target="_blank")
+                                    span(class="icon fa", ng-class="'fa-' + icon.name")
+                                    span(class="label") {{icon.label}}
+                            div(class="cover")
+                                div(class="innie")
+                                    i(class="fa fa-lg", ng-class="'fa-' + icon.name")
+                                div(class="spine")
+                                div(class="outie")
+                                    i(class="fa fa-lg", ng-class="'fa-' + icon.name")
+                            div(class="shadow")
     .col-md-6.col-xs-12
         .row(class="skill-block")
             .col-md-12

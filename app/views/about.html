@@ -19,21 +19,21 @@
             </p>
           </div>
         </div>
-        <div class="row">
-          <div class="social-buttons">
-            <div ng-repeat="icon in socialIcons">
-              <div class="col-md-4 col-xs-6">
-                <section id="{{icon.name}}">
-                  <div class="button"><a href="{{icon.href}}" target="_blank" class="btn"><span ng-class="'fa-' + icon.name" class="icon fa fa-lg"></span><span class="label">{{icon.label}}</span></a></div>
-                  <div class="cover">
-                    <div class="innie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
-                    <div class="spine"></div>
-                    <div class="outie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
-                  </div>
-                  <div class="shadow"></div>
-                </section>
+      </div>
+    </div>
+    <div class="row">
+      <div class="social-buttons">
+        <div ng-repeat="icon in socialIcons">
+          <div class="col-md-4 col-xs-6">
+            <section id="{{icon.name}}">
+              <div class="button"><a href="{{icon.href}}" target="_blank" class="btn"><span ng-class="'fa-' + icon.name" class="icon fa"></span><span class="label">{{icon.label}}</span></a></div>
+              <div class="cover">
+                <div class="innie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
+                <div class="spine"></div>
+                <div class="outie"><i ng-class="'fa-' + icon.name" class="fa fa-lg"></i></div>
               </div>
-            </div>
+              <div class="shadow"></div>
+            </section>
           </div>
         </div>
       </div>
