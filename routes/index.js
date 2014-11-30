@@ -27,6 +27,10 @@
         res.render('index', { title: 'Levi Lu' });
     });
 
+    router.get("/preload", function (req, res) {
+        res.render("preload");
+    });
+
     router.get('/about', function (req, res) {
         res.render('about', { title: 'About me'});
     });

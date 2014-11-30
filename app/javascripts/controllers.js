@@ -61,6 +61,10 @@
         };
     })
 
+    .controller("PreloadCtrl", ["$rootScope", "$scope", "$http", function ($rootScope, $scope, $http) {
+        
+    }])
+
     .controller('dBeaconCtrl', function ($scope, $state, $http, $timeout) {
       $scope.data = null;
       $scope.nodeLabels = {};
@@ -737,7 +741,6 @@
                 $scope.socialIcons[index].offset = $(this).offset();
                 index ++;
             });
-            console.log($scope.socialIcons);
         };
         $(document).ready(function() {
             setTimeout(function () {

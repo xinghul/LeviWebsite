@@ -14,7 +14,7 @@
         "ui.router",
         "ui.bootstrap"
     ])
-    .config(["$provide", "$stateProvider", "$urlRouterProvider", "$locationProvider", function ($provide, $stateProvider, $urlRouterProvider, $locationProvider){
+    .config(["$stateProvider", "$urlRouterProvider", "$locationProvider", function ($stateProvider, $urlRouterProvider, $locationProvider){
         // $provide.decorator("$sniffer", ["$delegate", function ($delegate) {
         //     $delegate.history = false;
         //     return $delegate;
@@ -27,6 +27,13 @@
             .otherwise("/blog");
         
         $stateProvider
+
+            .state("preload", {
+                url: "/preload",
+                templateUrl: "preload",
+                controller: "PreloadCtrl"
+            })
+
             .state('about', {
                 url: "/about",
                 templateUrl: "about",
@@ -74,6 +81,8 @@
                 });
     }])
     .run(function ($rootScope, $state, $location, $timeout, Auth) {
+        $rootScope.preloadPercentage = 0;
+        $rootScope.preloadSuccess    = false;
 
         //watching the value of the currentUser variable.
         $rootScope.$watch('currentUser', function (currentUser) {
@@ -83,7 +92,12 @@
                 Auth.currentUser();
             }
         });
-
+        // $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+        //     if (!$rootScope.preloadSuccess && toState.templateUrl !== "preload") {
+        //         event.preventDefault();
+        //         $state.go("preload");
+        //     }
+        // });
         // On catching 401 errors, redirect to the login page.
         $rootScope.$on('event:auth-loginRequired', function () {
             $("#modalAuth").modal("show");
@@ -102,11 +116,6 @@
                 }, 0);
             }
         });
-    });
-
-    angular.module("underscore", [])
-    .factory('_', function () {
-        return window._;
     });
 }());
 
