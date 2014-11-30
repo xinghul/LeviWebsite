@@ -61,210 +61,223 @@
         };
     })
 
-    .controller("PreloadCtrl", ["$rootScope", "$scope", "$http", function ($rootScope, $scope, $http) {
-        
+    .controller("PreloadCtrl", ["$rootScope", "$scope", function ($rootScope, $scope) {
+        $rootScope.getArticles()
+            .then(function (data) {
+                $rootScope.articleData = data;
+                $rootScope.preloadPercentage += 40;
+            }, function (reason) {
+                console.log(reason);
+            })
+            .then($rootScope.checkPreloadProcess);
+        $rootScope.getTags()
+            .then(function (data) {
+                $rootScope.tagData = data;
+                $rootScope.preloadPercentage += 20;
+            }, function (reason) {
+                console.log(reason);
+            })
+            .then($rootScope.checkPreloadProcess);
+        $rootScope.getBeaconData()
+            .then(function (data) {
+                $rootScope.beaconData = data;
+                $rootScope.preloadPercentage += 40;
+            }, function (reason) {
+                console.log(reason);
+            })
+            .then($rootScope.checkPreloadProcess);
     }])
 
-    .controller('dBeaconCtrl', function ($scope, $state, $http, $timeout) {
-      $scope.data = null;
-      $scope.nodeLabels = {};
-      $scope.linkTypes = [];
-      $scope.selectedLabel = null;
-      $scope.selectedRls = null;
-      $scope.nodeId = null;
-      $scope.nodeInfo = null;
-      $scope.nodeLabel = null;
-      $scope.graphInfo = "";
-      $scope.editFormData = {};
-      $scope.dataAddNode = {};
-      $scope.addingRls = false;
-      $scope.nodeChosen = [];
-      $scope.deleteNode = function () {
-        $http.post('/api/dbeacon/delete', {"id": $scope.nodeId}).
-            success(function (data) {
-              refreshView(data);
-            });
-      };
-      $scope.editNode = function () {
-        var dataToSend = {};
-        for (var key in $scope.nodeInfo)
-          dataToSend[key] = $scope.editFormData.hasOwnProperty(key) ? 
-                            $scope.editFormData[key] : $scope.nodeInfo[key];
-        $http.post('/api/dbeacon/update', {"id": $scope.nodeId, "data": dataToSend}).
-          success(function (data) {
-            refreshView(data);
-          });
-      };
-      $scope.addNode = function () {
-        $http.post('/api/dbeacon/addnode', {"label": $scope.selectedLabel.label, "data": $scope.dataAddNode}).
-          success(function (data) {
-            refreshView(data);
-          });
-      };
-      $scope.addRls = function () {
-        $http.post('/api/dbeacon/addrls', {"nodes": $scope.nodeChosen, "type": $scope.selectedRls}).
-          success(function (data) {
-            refreshView(data);
-          });
-        $scope.addingRls = false;
+    .controller('dBeaconCtrl', function ($rootScope, $scope, $state, $http, $timeout) {
+        $scope.data = null;
+        $scope.nodeLabels = {};
+        $scope.linkTypes = [];
+        $scope.selectedLabel = null;
         $scope.selectedRls = null;
+        $scope.nodeId = null;
+        $scope.nodeInfo = null;
+        $scope.nodeLabel = null;
+        $scope.graphInfo = "";
+        $scope.editFormData = {};
+        $scope.dataAddNode = {};
+        $scope.addingRls = false;
         $scope.nodeChosen = [];
-      };
-      $scope.chooseNodes = function () {
-        if (!$scope.addingRls) {
-          $scope.addingRls = true;
-        } else {
-          $scope.addingRls = false;
-        }
-        $scope.nodeChosen = [];
-      };
+        $scope.deleteNode = function () {
+            $http.post('/api/dbeacon/delete', {"id": $scope.nodeId}).
+            success(function (data) {
+                refreshView(data);
+            });
+        };
+        $scope.editNode = function () {
+            var dataToSend = {};
+            for (var key in $scope.nodeInfo)
+                dataToSend[key] = $scope.editFormData.hasOwnProperty(key) ? 
+            $scope.editFormData[key] : $scope.nodeInfo[key];
+            $http.post('/api/dbeacon/update', {"id": $scope.nodeId, "data": dataToSend}).
+            success(function (data) {
+                refreshView(data);
+            });
+        };
+        $scope.addNode = function () {
+            $http.post('/api/dbeacon/addnode', {"label": $scope.selectedLabel.label, "data": $scope.dataAddNode}).
+            success(function (data) {
+                refreshView(data);
+            });
+        };
+        $scope.addRls = function () {
+            $http.post('/api/dbeacon/addrls', {"nodes": $scope.nodeChosen, "type": $scope.selectedRls}).
+            success(function (data) {
+                refreshView(data);
+            });
+            $scope.addingRls = false;
+            $scope.selectedRls = null;
+            $scope.nodeChosen = [];
+        };
+        $scope.chooseNodes = function () {
+            if (!$scope.addingRls) {
+                $scope.addingRls = true;
+            } else {
+                $scope.addingRls = false;
+            }
+            $scope.nodeChosen = [];
+        };
 
-      var height = 600;
-      var svg = d3.select("#frame").append("svg")
-          .attr("height", height);
+        var height = 600;
+        var svg = d3.select("#frame").append("svg")
+        .attr("height", height);
 
-      var colorTable = {}, labels = [];
-      var colorTableLink = {};
-      
-      var node = svg.selectAll(".node"),
-          linkgroup = svg.selectAll(".link"),
-          link = null,
-          textNode = null,
-          textLink = null,
-          cursor = null;
-
-      var color = d3.scale.category20(), 
-          link_color = d3.scale.ordinal()
-          .domain([0, 1, 2, 3])
-          .range(["#000", "#660000", "#006633", "#666600"]);
-
-      var force = d3.layout.force()
-          .nodes([{}])
-          .charge(-400)
-          .on("tick", tick);
-
-      $http.get('/api/dbeacon/list').
-      success(function (data, status, headers, config) {
-        $scope.data = data;
-        $scope.graphInfo = "Displaying " + data.nodes.length + " nodes, " + data.links.length + " relationships.";
-        initLabelFields();
-        updateColorRef();
-        updateGraph();
-        force.size([angular.element('#frame svg').width(), height]);
-      });
-
-      var refreshView = function (data) {
-        $timeout(function () {
-          $scope.graphInfo = data.msg;
-          $scope.$apply();
-        });
-        return $timeout(function () {
-            $state.go('.', {}, { reload: true });
-        }, 1000);
-      };
-
-      var initLabelFields = function () {
-        var data = $scope.data;
-        data.nodes.forEach(function (node) {
-          if (!$scope.nodeLabels.hasOwnProperty(node.label)) {
-            $scope.nodeLabels[node.label] = [];
-            $scope.nodeLabels[node.label].label = node.label;
-            $scope.nodeLabels[node.label].fields = [];
-            for (var key in node.data)
-              $scope.nodeLabels[node.label].fields.push(key);
-          }
-        });
-      };
-
-      var updateColorRef = function () {
-        var data = $scope.data;
-
-        data.nodes.forEach(function (node) {
-          if (!colorTable.hasOwnProperty(node.label)) {
-            labels.push(node.label);
-            colorTable[node.label] = color(node.group);
-          }
-        });
-
-        data.links.forEach(function (link) {
-          if (!colorTableLink.hasOwnProperty(link.type)) {
-            $scope.linkTypes.push(link.type);
-            colorTableLink[link.type] = link_color($scope.linkTypes.length - 1);
-          }
-        });
-
-        labels.sort();
-        $scope.linkTypes.sort();
-
-        var colorSvgNode = d3.select("#color-table-node").append("svg");
-
-        // for nodes
-        var cNode = colorSvgNode.selectAll("circle")
-        .data(labels, function (d) { return d; });
+        var colorTable = {}, labels = [];
+        var colorTableLink = {};
         
-        var heightSvg = 0;
+        var node = svg.selectAll(".node"),
+        linkgroup = svg.selectAll(".link"),
+        link = null,
+        textNode = null,
+        textLink = null,
+        cursor = null;
 
-        cNode.enter().append("circle")
-        .attr("cx", 40)
-        .attr("cy", function (d, i) { return (heightSvg = 40 * i + 20); })
-        .style("fill", function (d) { return colorTable[d]; })
-        .attr("r", 8);
+        var color = d3.scale.category20(), 
+        link_color = d3.scale.ordinal()
+        .domain([0, 1, 2, 3])
+        .range(["#000", "#660000", "#006633", "#666600"]);
 
-        var textNode = colorSvgNode.selectAll("text")
-        .data(labels, function (d) { return d; })
-        .enter().append("text");
+        var force = d3.layout.force()
+        .nodes([{}])
+        .charge(-400)
+        .on("tick", tick);
 
-        var labelNode = textNode
-        .attr("x", 60)
-        .attr("y", function (d, i) { return 40 * i + 25; })
-        .text( function (d) { return d; })
-        .attr("font-size", 15);
+        var refreshView = function (data) {
+            $timeout(function () {
+                $scope.graphInfo = data.msg;
+                $scope.$apply();
+            });
+            return $timeout(function () {
+                $state.go('.', {}, { reload: true });
+            }, 1000);
+        };
 
-        colorSvgNode.attr("height", heightSvg + 25);
-        heightSvg = 0;
+        var initLabelFields = function () {
+            var data = $scope.data;
+            data.nodes.forEach(function (node) {
+                if (!$scope.nodeLabels.hasOwnProperty(node.label)) {
+                    $scope.nodeLabels[node.label] = [];
+                    $scope.nodeLabels[node.label].label = node.label;
+                    $scope.nodeLabels[node.label].fields = [];
+                    for (var key in node.data)
+                        $scope.nodeLabels[node.label].fields.push(key);
+                }
+            });
+        };
 
-        //for links
-        var colorSvgLink = d3.select("#color-table-link").append("svg");
-        var cLine = colorSvgLink.selectAll("line")
-        .data($scope.linkTypes, function (d) { return d; });
-        
-        cLine.enter().append("line")
-        .attr("x1", 33)
-        .attr("y1", function (d, i) { return (heightSvg = 40 * i + 20); })
-        .attr("x2", 47)
-        .attr("y2", function (d, i) { return 40 * i + 20; })
-        .style("stroke", function (d) { return colorTableLink[d]; })
-        .style("stroke-width", 3);
+        var updateColorRef = function () {
+            var data = $scope.data;
 
-        var textLink = colorSvgLink.selectAll("text")
-        .data($scope.linkTypes, function (d) { return d; })
-        .enter().append("text");
+            data.nodes.forEach(function (node) {
+                if (!colorTable.hasOwnProperty(node.label)) {
+                    labels.push(node.label);
+                    colorTable[node.label] = color(node.group);
+                }
+            });
 
-        var labelLink = textLink
-        .attr("x", 60)
-        .attr("y", function (d, i) { return 40 * i + 25; })
-        .text( function (d) { return d; })
-        .attr("font-size", 14);
+            data.links.forEach(function (link) {
+                if (!colorTableLink.hasOwnProperty(link.type)) {
+                    $scope.linkTypes.push(link.type);
+                    colorTableLink[link.type] = link_color($scope.linkTypes.length - 1);
+                }
+            });
 
-        colorSvgLink.attr("height", heightSvg + 25);
+            labels.sort();
+            $scope.linkTypes.sort();
 
-        cNode.exit().remove();
-        cLine.exit().remove();
-      };
+            var colorSvgNode = d3.select("#color-table-node").append("svg");
 
-      var updateGraph = function () {
-        var graph = $scope.data;
-        force
+            // for nodes
+            var cNode = colorSvgNode.selectAll("circle")
+            .data(labels, function (d) { return d; });
+            
+            var heightSvg = 0;
+
+            cNode.enter().append("circle")
+            .attr("cx", 40)
+            .attr("cy", function (d, i) { return (heightSvg = 40 * i + 20); })
+            .style("fill", function (d) { return colorTable[d]; })
+            .attr("r", 8);
+
+            var textNode = colorSvgNode.selectAll("text")
+            .data(labels, function (d) { return d; })
+            .enter().append("text");
+
+            var labelNode = textNode
+            .attr("x", 60)
+            .attr("y", function (d, i) { return 40 * i + 25; })
+            .text( function (d) { return d; })
+            .attr("font-size", 15);
+
+            colorSvgNode.attr("height", heightSvg + 25);
+            heightSvg = 0;
+
+            //for links
+            var colorSvgLink = d3.select("#color-table-link").append("svg");
+            var cLine = colorSvgLink.selectAll("line")
+            .data($scope.linkTypes, function (d) { return d; });
+            
+            cLine.enter().append("line")
+            .attr("x1", 33)
+            .attr("y1", function (d, i) { return (heightSvg = 40 * i + 20); })
+            .attr("x2", 47)
+            .attr("y2", function (d, i) { return 40 * i + 20; })
+            .style("stroke", function (d) { return colorTableLink[d]; })
+            .style("stroke-width", 3);
+
+            var textLink = colorSvgLink.selectAll("text")
+            .data($scope.linkTypes, function (d) { return d; })
+            .enter().append("text");
+
+            var labelLink = textLink
+            .attr("x", 60)
+            .attr("y", function (d, i) { return 40 * i + 25; })
+            .text( function (d) { return d; })
+            .attr("font-size", 14);
+
+            colorSvgLink.attr("height", heightSvg + 25);
+
+            cNode.exit().remove();
+            cLine.exit().remove();
+        };
+
+        var updateGraph = function () {
+            var graph = $scope.data;
+            force
             .nodes(graph.nodes)
             .links(graph.links)
             .linkDistance(function (d) { return d.target.weight * 25;})
             .start();
 
-        linkgroup = linkgroup.data(graph.links)
+            linkgroup = linkgroup.data(graph.links)
             .enter().append("g");
-        link = linkgroup.append("line").attr("class", "link")
+            link = linkgroup.append("line").attr("class", "link")
             .style("stroke", function (d) { return colorTableLink[d.type]; });
-        textLink = linkgroup.append("text")
+            textLink = linkgroup.append("text")
             .attr("class", "textLink")
             .attr("fill", "#606060")
             .attr("text-anchor", "middle")
@@ -272,63 +285,71 @@
             .attr("font-style", "italic")
             .text(function(d) { return d.type; });
 
-        node = node.data(graph.nodes)
+            node = node.data(graph.nodes)
             .enter().append("g")
             .call(force.drag);
-        node.append("circle").attr("r", 13)
+            node.append("circle").attr("r", 13)
             .attr("class", "node")
             .style("fill", function (d) { return color(d.group); })
             .on("click", nodeOnClick)
             .on("focusin", nodeFocusIn)
             .on("focusout", nodeFocusOut);
-        textNode = node.append("text")
+            textNode = node.append("text")
             .attr("class", "textNode")
             .attr("dy", 4)
             .attr("fill", "black")
             .attr("text-anchor", "middle")
             .attr("font-size", "18px")
             .text(function(d) { return d.data.name; });
-      };
-      function tick() {
-        link.attr("x1", function(d) { return d.source.x; })
+        };
+
+        $scope.data = $rootScope.beaconData;
+        $scope.graphInfo = "Displaying " + $scope.data.nodes.length + " nodes, " + $scope.data.links.length + " relationships.";
+        initLabelFields();
+        updateColorRef();
+        updateGraph();
+        force.size([angular.element('#frame svg').width(), height]);
+        
+        function tick() {
+            link.attr("x1", function(d) { return d.source.x; })
             .attr("y1", function(d) { return d.source.y; })
             .attr("x2", function(d) { return d.target.x; })
             .attr("y2", function(d) { return d.target.y; });
 
-        textLink.attr("transform", function(d) { 
-          return "translate(" + (d.source.x + d.target.x) / 2 + "," + (d.source.y + d.target.y) / 2 + ")"; 
-        });
+            textLink.attr("transform", function(d) { 
+                return "translate(" + (d.source.x + d.target.x) / 2 + "," + (d.source.y + d.target.y) / 2 + ")"; 
+            });
 
-        node.attr("transform", function(d) { 
-          return "translate(" + d.x + "," + d.y + ")"; 
-        });
-      }
-
-      function nodeOnClick(d) {
-        $scope.nodeId = d.id;
-        $scope.nodeInfo = d.data;
-        $scope.nodeLabel = d.label;
-        if ($scope.addingRls) {
-          if ($scope.nodeChosen.length < 2) {
-            $scope.nodeChosen.push(d.id);
-            if ($scope.nodeChosen.length == 2) {
-              $("#modalAddRls").modal("show");
-            }
-          }
+            node.attr("transform", function(d) { 
+                return "translate(" + d.x + "," + d.y + ")"; 
+            });
         }
-        $scope.$apply();
-      }
 
-      function nodeFocusIn() {
-        d3.select(this).transition()
+        function nodeOnClick(d) {
+            $scope.nodeId = d.id;
+            $scope.nodeInfo = d.data;
+            $scope.nodeLabel = d.label;
+            if ($scope.addingRls) {
+                if ($scope.nodeChosen.length < 2) {
+                    $scope.nodeChosen.push(d.id);
+                    if ($scope.nodeChosen.length == 2) {
+                        $("#modalAddRls").modal("show");
+                    }
+                }
+            }
+            $scope.$apply();
+        }
+
+        function nodeFocusIn() {
+            d3.select(this).transition()
             .duration(400)
             .attr("r", 20);
-      }
-      function nodeFocusOut() {
-        d3.select(this).transition()
+        }
+        function nodeFocusOut() {
+            d3.select(this).transition()
             .duration(400)
             .attr("r", 13);
-      }
+        }
     })
 
     .controller('dBeaconChordCtrl', function ($scope, $http) {
@@ -338,8 +359,8 @@
 
         $http.get('/api/dbeacon/relation').
         success(function (data, status, headers, config) {
-          $scope.data = data;
-          draw(data);
+            $scope.data = data;
+            draw(data);
         });
         var indexToData = [];
 
@@ -363,96 +384,96 @@
             .attr("transform", "translate(" + angular.element('#frame svg').width() / 2 + "," + height / 2 + ")");
 
         function fade(opacity) {
-          return function(g, i) {
-            svg.selectAll("g path.chord")
-            .filter(function(d) {
-              return d.source.index != i && d.target.index != i;
-            })
-            .transition()
-            .style("opacity", opacity);
-          };
+            return function(g, i) {
+                svg.selectAll("g path.chord")
+                .filter(function(d) {
+                    return d.source.index != i && d.target.index != i;
+                })
+                .transition()
+                .style("opacity", opacity);
+            };
         }
           
         function draw(nodes) {
-          var indexByName      = {},
-              nameByIndex      = {},
-              dataByIndex      = {},
-              neighborsByIndex = {},
-              matrix = [],
-              index  = 0;
+            var indexByName      = {},
+                nameByIndex      = {},
+                dataByIndex      = {},
+                neighborsByIndex = {},
+                matrix = [],
+                index  = 0;
 
-          // Compute a unique index for each name.
-          nodes.forEach(function(d) {
-            if (!(d.name in indexByName)) {
-              nameByIndex[index]      = d.name;
-              dataByIndex[index]      = d.data;
-              neighborsByIndex[index] = d.neighbors;
-              indexByName[d.name]     = index ++;
-            }
-          });
-
-          // Construct a square matrix counting relationships.
-          nodes.forEach(function(d) {
-            var source = indexByName[d.name],
-                row = matrix[source];
-            if (!row) {
-              row = matrix[source] = [];
-              for (var i = 0; i < index; i ++) 
-                row[i] = 0;
-            }
-            d.neighbors.forEach(function(d) { 
-              row[indexByName[d]]++; 
+            // Compute a unique index for each name.
+            nodes.forEach(function(d) {
+                if (!(d.name in indexByName)) {
+                    nameByIndex[index]      = d.name;
+                    dataByIndex[index]      = d.data;
+                    neighborsByIndex[index] = d.neighbors;
+                    indexByName[d.name]     = index ++;
+                }
             });
-          });
 
-          chord.matrix(matrix);
+            // Construct a square matrix counting relationships.
+            nodes.forEach(function(d) {
+                var source = indexByName[d.name],
+                    row = matrix[source];
+                if (!row) {
+                    row = matrix[source] = [];
+                    for (var i = 0; i < index; i ++) 
+                        row[i] = 0;
+                }
+                d.neighbors.forEach(function(d) { 
+                    row[indexByName[d]]++; 
+                });
+            });
 
-          var g = svg.selectAll("g.group")
-              .data(chord.groups)
-              .enter().append("g")
-              .attr("class", "group");
+            chord.matrix(matrix);
 
-          g.append("path")
-              .style("fill", function(d) { return fill(d.index); })
-              .style("stroke", function(d) { return fill(d.index); })
-              .attr("d", arc)
-              .on("mouseover", fade(.1))
-              .on("mouseout", fade(1))
-              .on("click", nodeOnClick);
-              
-          
-          g.append("text")
-              .each(function(d) { 
-                d.angle     = (d.startAngle + d.endAngle) / 2;
-                d.data      = dataByIndex[d.index];
-                d.neighbors = neighborsByIndex[d.index];
-              })
-              .attr("dy", ".35em")
-              .attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
-              .attr("transform", function(d) {
-                return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-                    + "translate(" + (r + 26) + ")"
-                    + (d.angle > Math.PI ? "rotate(180)" : "");
-              })
-              .text(function(d) { return nameByIndex[d.index]; });
+            var g = svg.selectAll("g.group")
+                .data(chord.groups)
+                .enter().append("g")
+                .attr("class", "group");
 
-          svg.selectAll("path.chord")
-              .data(chord.chords)
-              .enter().append("path")
-              .attr("class", "chord")
-              .style("stroke", function(d) { return d3.rgb(fill(d.source.index)).darker(); })
-              .style("fill", function(d) { return fill(d.source.index); })
-              .attr("d", d3.svg.chord().radius(r));
+            g.append("path")
+                .style("fill", function(d) { return fill(d.index); })
+                .style("stroke", function(d) { return fill(d.index); })
+                .attr("d", arc)
+                .on("mouseover", fade(.1))
+                .on("mouseout", fade(1))
+                .on("click", nodeOnClick);
+                
+            
+            g.append("text")
+                .each(function(d) { 
+                    d.angle     = (d.startAngle + d.endAngle) / 2;
+                    d.data      = dataByIndex[d.index];
+                    d.neighbors = neighborsByIndex[d.index];
+                })
+                .attr("dy", ".35em")
+                .attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
+                .attr("transform", function(d) {
+                    return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+                        + "translate(" + (r + 26) + ")"
+                        + (d.angle > Math.PI ? "rotate(180)" : "");
+                })
+                .text(function(d) { return nameByIndex[d.index]; });
+
+            svg.selectAll("path.chord")
+                .data(chord.chords)
+                .enter().append("path")
+                .attr("class", "chord")
+                .style("stroke", function(d) { return d3.rgb(fill(d.source.index)).darker(); })
+                .style("fill", function(d) { return fill(d.source.index); })
+                .attr("d", d3.svg.chord().radius(r));
         }
 
         function nodeOnClick(d) {
-          $scope.nodeInfo      = d.data;
-          $scope.nodeNeighbors = _.uniq(d.neighbors);
-          $scope.$apply();
+            $scope.nodeInfo      = d.data;
+            $scope.nodeNeighbors = _.uniq(d.neighbors);
+            $scope.$apply();
         }
     })
 
-    .controller('BlogCtrl', function ($scope, $sce, $http) {
+    .controller('BlogCtrl', function ($rootScope, $scope, $sce, $http) {
         $scope.articles = null;
         $scope.colors   = null;
         $scope.tagColor = [];
@@ -529,29 +550,15 @@
 
             return colors;
         };
-        $scope.getArticles = function () {
-            $http.get('/api/blog/articles').
-                success(function (data, status, headers, config) {
-                    $scope.articles = data;
-                }).
-                error(function (data, status, headers, config) {
-                    console.log(data);
-                });
+        
+        $scope.setTagColor = function (data) {
+            $scope.colors = $scope.randomColors(data.length);
+            data.forEach(function (tag) {
+                $scope.tagColor[tag.name] = $scope.colors[data.indexOf(tag)];
+            });
         };
-        $scope.setTagColor = function () {
-            $http.get('/api/tags').
-                success(function (data, status, headers, config) {
-                    $scope.colors = $scope.randomColors(data.length);
-                    data.forEach(function (tag) {
-                        $scope.tagColor[tag.name] = $scope.colors[data.indexOf(tag)];
-                    });
-                }).
-                error(function (data, status, headers, config) {
-                    console.log(data);
-                });
-        };
-        $scope.getArticles();
-        $scope.setTagColor();
+        $scope.articles = $rootScope.articleData;
+        $scope.setTagColor($rootScope.tagData);
     })
 
     .controller("BlogEditorCtrl", function ($scope, $state, $http, $timeout) {
@@ -616,35 +623,36 @@
             height: 400,
             additionalButtons: [
             [{
-                  name: "groupCustom",
-                  data: [{
+                name: "groupCustom",
+                data: [{
                     name: "cmdBeer",
                     toggle: true, // this param only take effect if you load bootstrap.js
                     title: "Beer",
                     icon: "glyphicon glyphicon-glass",
                     callback: function(e){
-                      // Replace selection with some drinks
-                      var chunk, cursor,
-                          selected = e.getSelection(), content = e.getContent(),
-                          drinks = ["Heinekken", "Budweiser",
-                                    "Iron City", "Amstel Light",
-                                    "Red Stripe", "Smithwicks",
-                                    "Westvleteren", "Sierra Nevada",
-                                    "Guinness", "Corona", "Calsberg"],
-                          index = Math.floor((Math.random()*10)+1)
+                        // Replace selection with some drinks
+                        var chunk, cursor,
+                            selected = e.getSelection(), 
+                            content = e.getContent(),
+                            drinks = ["Heinekken", "Budweiser",
+                                      "Iron City", "Amstel Light",
+                                      "Red Stripe", "Smithwicks",
+                                      "Westvleteren", "Sierra Nevada",
+                                      "Guinness", "Corona", "Calsberg"],
+                            index = Math.floor((Math.random()*10)+1);
 
 
-                      // Give random drink
-                      chunk = drinks[index]
+                        // Give random drink
+                        chunk = drinks[index];
 
-                      // transform selection and set the cursor into chunked text
-                      e.replaceSelection(chunk)
-                      cursor = selected.start
+                        // transform selection and set the cursor into chunked text
+                        e.replaceSelection(chunk);
+                        cursor = selected.start;
 
-                      // Set the cursor
-                      e.setSelection(cursor,cursor+chunk.length)
+                        // Set the cursor
+                        e.setSelection(cursor,cursor+chunk.length);
                     }
-                  }]
+                }]
             }]
             ]
         });

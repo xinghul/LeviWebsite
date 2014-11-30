@@ -80,9 +80,16 @@
                     templateUrl: "demo/boxshadow"
                 });
     }])
-    .run(function ($rootScope, $state, $location, $timeout, Auth) {
+    .run(["$rootScope", "$state", "$q", "$http", "$location", "$timeout", "Auth", function ($rootScope, $state, $q, $http, $location, $timeout, Auth) {
         $rootScope.preloadPercentage = 0;
         $rootScope.preloadSuccess    = false;
+        $rootScope.nextState         = null;
+
+        /********* global data *********/
+        $rootScope.articleData = null;
+        $rootScope.tagData     = null;
+        $rootScope.beaconData  = null;
+
 
         //watching the value of the currentUser variable.
         $rootScope.$watch('currentUser', function (currentUser) {
@@ -92,12 +99,13 @@
                 Auth.currentUser();
             }
         });
-        // $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-        //     if (!$rootScope.preloadSuccess && toState.templateUrl !== "preload") {
-        //         event.preventDefault();
-        //         $state.go("preload");
-        //     }
-        // });
+        $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+            if (!$rootScope.preloadSuccess && toState.templateUrl !== "preload") {
+                event.preventDefault();
+                $rootScope.nextState = toState.name;
+                $state.go("preload");
+            }
+        });
         // On catching 401 errors, redirect to the login page.
         $rootScope.$on('event:auth-loginRequired', function () {
             $("#modalAuth").modal("show");
@@ -116,7 +124,58 @@
                 }, 0);
             }
         });
-    });
+
+        $rootScope.getArticles = function () {
+            console.log("app.js", "getting articles");
+            var deferred = $q.defer();
+            $http.get('/api/blog/articles').
+                success(function (data, status, headers, config) {
+                    deferred.resolve(data);
+                }).
+                error(function (data, status, headers, config) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
+
+        $rootScope.getTags = function () {
+            console.log("app.js", "getting tags");
+            var deferred = $q.defer();
+            $http.get('/api/tags').
+                success(function (data, status, headers, config) {
+                    deferred.resolve(data);
+                }).
+                error(function (data, status, headers, config) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
+
+        $rootScope.getBeaconData = function () {
+            console.log("app.js", "getting beacons");
+            var deferred = $q.defer();
+            $http.get('/api/dbeacon/list')
+                .success(function (data, status, headers, config) {
+                    deferred.resolve(data);
+                })
+                .error(function (data, status, headers, config) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
+
+        $rootScope.checkPreloadProcess = function () {
+            var deferred = $q.defer();
+            $timeout(function () {
+                $rootScope.preloadSuccess = $rootScope.preloadPercentage >= 100 ? true : false;
+                if ($rootScope.preloadSuccess)
+                    deferred.resolve($state.go($rootScope.nextState));
+                else
+                    deferred.reject();
+            }, 10);
+            return deferred.promise;
+        };
+    }]);
 }());
 
 
