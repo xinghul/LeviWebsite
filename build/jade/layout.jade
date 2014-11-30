@@ -28,15 +28,15 @@ html(ng-app="myApp", ng-controller="AppCtrl")
                 .collapse.navbar-collapse(id="myNav")
                     ul.nav.navbar-nav
                         li(ui-sref-active="active")
-                            a(ui-sref="blog")
+                            a(href="#/blog")
                                 i(class="fa fa-lg fa-fw fa-coffee") 
                                 | Blog
                         li(ui-sref-active="active")
-                            a(ui-sref="demo")
+                            a(href="#/demo")
                                 i(class="fa fa-lg fa-fw fa-caret-square-o-right")
                                 | Demo
                         li(ui-sref-active="active")
-                            a(ui-sref="about") 
+                            a(href="#/about") 
                                 i(class="fa fa-lg fa-fw fa-user")
                                 | About
                     div(class="nav navbar-nav pull-right")
