@@ -25,9 +25,6 @@ a {
 .icons {
     height: 70px;
 }
-  .icons-facebook {
-    background-image: url(../images/icons/facebook.png);
-  }
 
 .intro-block {
   font-family: 'Patrick Hand', cursive;
@@ -180,7 +177,7 @@ path.chord {
   margin: auto;
   width: 100%;
   border: 1px solid #eee;
-  background-image: url(/images/bg.jpg);
+  background-color: rgba(184, 184, 184, 0.6);
 }
 
 
