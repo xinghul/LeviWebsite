@@ -62,7 +62,7 @@
     })
 
     .controller("PreloadCtrl", ["$rootScope", "$scope", function ($rootScope, $scope) {
-        $rootScope.getArticles()
+        $rootScope.get("/api/blog/articles")
             .then(function (data) {
                 $rootScope.articleData = data;
                 $rootScope.preloadPercentage += 40;
@@ -70,7 +70,7 @@
                 console.log(reason);
             })
             .then($rootScope.checkPreloadProcess);
-        $rootScope.getTags()
+        $rootScope.get("/api/tags")
             .then(function (data) {
                 $rootScope.tagData = data;
                 $rootScope.preloadPercentage += 20;
@@ -78,7 +78,7 @@
                 console.log(reason);
             })
             .then($rootScope.checkPreloadProcess);
-        $rootScope.getBeaconData()
+        $rootScope.get("/api/dbeacon/list")
             .then(function (data) {
                 $rootScope.beaconData = data;
                 $rootScope.preloadPercentage += 40;
