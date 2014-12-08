@@ -1,14 +1,14 @@
 
 <div class="col-md-12">
   <div class="row">
-    <div class="col-md-4"><i>placeholder: blog description, filter box, etc.</i></div>
-    <div class="col-md-4">
+    <div class="col-md-4 col-xs-6"><i>placeholder: blog description, filter box, etc.</i></div>
+    <div class="col-md-4 col-xs-6">
       <div id="btnPost" style="display:inline-block" ng-attr-original-title="{{ currentUser.admin ? '' : 'Only admin can post articles.' }}" ng-style="{ 'cursor': (currentUser.admin ? 'auto' : 'no-drop') }" data-toggle="tooltip" data-placement="right"><a ng-class="{disabled : !currentUser.admin}" ui-sref="blog.editor" class="btn btn-success"><i class="fa fa-lg fa-fw fa-pencil-square-o"></i>Post</a></div>
     </div>
   </div>
 </div>
 <div ng-repeat="article in articles">
-  <div class="col-md-6 col-xs-12">
+  <div class="col-md-6 col-sm-12 col-xs-12">
     <div class="blog-grid"><a ui-sref="blog.article({index: articles.indexOf(article)})"><img ng-src="/images/blog/{{article.logo}}.jpg" class="blog-grid-logo"/></a>
       <div class="blog-grid-content">
         <div class="blog-grid-info">

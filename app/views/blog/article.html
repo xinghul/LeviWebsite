@@ -5,10 +5,10 @@
       <h1>{{article.title}}</h1>
     </div>
     <div class="article-info">
-      <div class="col-md-2"><i class="fa fa-fw fa-pencil"></i>{{article.author}}</div>
-      <div class="col-md-2"> <i class="fa fa-fw fa-calendar"></i>{{parseDate(article.date)}}</div>
-      <div class="col-md-2"> <i class="fa fa-fw fa-eye"></i>{{article.views}} views</div>
-      <div class="col-md-6 text-right"><i class="fa fa-fw fa-tags"></i><span ng-repeat="tag in article.tag" ng-style="{'background-color': tagColor[tag]}">{{tag}}</span></div>
+      <div class="col-md-2 col-xs-2"><i class="fa fa-fw fa-pencil"></i>{{article.author}}</div>
+      <div class="col-md-2 col-xs-2"><i class="fa fa-fw fa-calendar"></i>{{parseDate(article.date)}}</div>
+      <div class="col-md-2 col-xs-2"><i class="fa fa-fw fa-eye"></i>{{article.views}} views</div>
+      <div class="col-md-6 col-xs-6 text-right"><i class="fa fa-fw fa-tags"></i><span ng-repeat="tag in article.tag" ng-style="{'background-color': tagColor[tag]}">{{tag}}</span></div>
     </div>
     <div class="article-content">
       <div ng-bind-html="toTrustedHTML(article.content)"></div>

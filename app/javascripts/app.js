@@ -3,7 +3,6 @@
 
     var eventAction = ["$rootScope", "$state", "$timeout", "Auth", function ($rootScope, $state, $timeout, Auth) {
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-            console.log(toState);
             if (!$rootScope.preloadSuccess && toState.templateUrl !== "preload") {
                 event.preventDefault();
                 $rootScope.nextState = toState.name;

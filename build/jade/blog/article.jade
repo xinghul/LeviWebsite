@@ -3,16 +3,16 @@
         div(class="article-title")
             h1 {{article.title}}
         div(class="article-info")
-            .col-md-2 
+            .col-md-2.col-xs-2
                 i(class="fa fa-fw fa-pencil")
                 | {{article.author}}
-            .col-md-2  
+            .col-md-2.col-xs-2
                 i(class="fa fa-fw fa-calendar")
                 | {{parseDate(article.date)}}
-            .col-md-2  
+            .col-md-2.col-xs-2 
                 i(class="fa fa-fw fa-eye")
                 | {{article.views}} views
-            .col-md-6(class="text-right")
+            .col-md-6.col-xs-6(class="text-right")
                 i(class="fa fa-fw fa-tags")
                 span(ng-repeat="tag in article.tag", ng-style="{'background-color': tagColor[tag]}") {{tag}}
         div(class="article-content")
